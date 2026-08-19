@@ -174,23 +174,23 @@
   nav.innerHTML = `
     <div id="ed-nav-links">
       <p class="section-label">Presentation</p>
-      <a href="/slides/ed-germany/" class="${isActive('/ed-germany/') && !currentPath.includes('mockups') ? 'active' : ''}">
+      <a href="/certific-germany/ed-germany/" class="${isActive('/ed-germany/') && !currentPath.includes('mockups') ? 'active' : ''}">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="m8 21 4-4 4 4"/><path d="M12 17v-4"/></svg>
         Slide Deck
       </a>
 
       <p class="section-label">Product</p>
-      <a href="/slides/ed-germany-mockups/patient-flow.html" class="${isActive('patient-flow') ? 'active' : ''}">
+      <a href="/certific-germany/ed-germany-mockups/patient-flow.html" class="${isActive('patient-flow') ? 'active' : ''}">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
         Patient View
       </a>
-      <a href="/slides/ed-germany-mockups/provider-view.html" class="${isActive('provider-view') ? 'active' : ''}">
+      <a href="/certific-germany/ed-germany-mockups/provider-view.html" class="${isActive('provider-view') ? 'active' : ''}">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
         Provider View
       </a>
 
       <p class="section-label">Documents</p>
-      <a href="/slides/ed-germany-mockups/pilot-proposal.html" class="${isActive('pilot-proposal') ? 'active' : ''}">
+      <a href="/certific-germany/ed-germany-mockups/pilot-proposal.html" class="${isActive('pilot-proposal') ? 'active' : ''}">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
         Pilot Proposal
       </a>
