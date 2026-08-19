@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<script src="/slides/ed-germany-mockups/nav-menu.js"></script>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/certific-design-system-f4127281-c8d1-4bfb-af2d-ea5d83f3828d/colors_and_type.css">
+  <script src="_ds/certific-design-system-f4127281-c8d1-4bfb-af2d-ea5d83f3828d/_ds_bundle.js"></script>
+  <script src="./image-slot.js"></script>
+  <script src="./image-slot.js"></script>
+  <style>
+    @font-face { font-family: 'GT Planar'; src: url('fonts/GT-Planar-CERT.woff2'); font-weight: 300; font-display: swap; }
+    @font-face { font-family: 'Public Sans'; src: url('fonts/Public-Sans.woff2'); font-display: swap; }
+    body { margin: 0; background: #E9EDEF; font-family: 'Public Sans', sans-serif; color: #222222; }
+    a { color: #3D15E0; text-decoration: none; }
+    a:hover { color: #3312BD; }
+    textarea, input, button { font-family: 'Public Sans', sans-serif; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes hotspot-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(61, 21, 224, 0.45); }
+      70% { box-shadow: 0 0 0 14px rgba(61, 21, 224, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(61, 21, 224, 0); }
+    }
+    @keyframes cta-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(61, 21, 224, 0.35); }
+      70% { box-shadow: 0 0 0 10px rgba(61, 21, 224, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(61, 21, 224, 0); }
+    }
+    @keyframes hotspot-pulse-red {
+      0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.45); }
+      70% { box-shadow: 0 0 0 14px rgba(220, 53, 69, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+    }
+    @keyframes row-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(61, 21, 224, 0.4); }
+      70% { box-shadow: 0 0 0 8px rgba(61, 21, 224, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(61, 21, 224, 0); }
+    }
+  </style>
+</helmet>
+<div style="display:flex;flex-direction:column;align-items:center;padding:8px 16px 16px">
+  <x-import component-from-global-scope="ChromeWindow" from="./browser-window.jsx" width="{{ 1280 }}" height="{{ 680 }}" url="app.certific.co/clinic/e-contacts" hint-size="1280px,680px">
+    <div style="min-height:100%;background:#F4F6F7;box-sizing:border-box;font-size:16px;color:#222222;zoom:0.68">
+
+      <sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ true }}">
+        <div data-screen-label="Dashboard" style="padding:8px 24px 32px">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0">
+            <button style="display:inline-flex;align-items:center;gap:0.35rem;background:transparent;border:none;padding:0;color:#222222;font-size:16px;cursor:pointer" aria-label="Menu">
+              <span style="display:inline-block;width:21px;height:21px;background:#222222;-webkit-mask:url('assets/icons/hamburger-menu.svg') center/contain no-repeat;mask:url('assets/icons/hamburger-menu.svg') center/contain no-repeat"></span>
+              Menu
+            </button>
+            <div style="display:flex;align-items:center;gap:24px">
+              <span style="display:inline-flex;align-items:center;gap:6px;font-size:16px;cursor:pointer">{{ clinicName }}<span style="display:inline-block;width:14px;height:14px;background:#222222;-webkit-mask:url('assets/icons/chevron-down.svg') center/contain no-repeat;mask:url('assets/icons/chevron-down.svg') center/contain no-repeat"></span></span>
+              <span style="display:inline-flex;align-items:center;gap:4px;font-size:16px;cursor:pointer">EN<span style="display:inline-block;width:14px;height:14px;background:#222222;-webkit-mask:url('assets/icons/chevron-down.svg') center/contain no-repeat;mask:url('assets/icons/chevron-down.svg') center/contain no-repeat"></span></span>
+            </div>
+          </div>
+          <h1 style="font-family:'GT Planar','Public Sans',sans-serif;font-weight:300;font-size:32px;line-height:1;margin:16px 0 24px">Dashboard</h1>
+          <div style="display:flex;flex-wrap:wrap;margin-bottom:16px">
+            <sc-for list="{{ statusTabs }}" as="st" hint-placeholder-count="2">
+              <button onClick="{{ st.select }}" style="flex:0 0 auto;padding:8px 24px 8px 16px;background:transparent;border:none;border-bottom:{{ st.borderBottom }};color:{{ st.color }};font-size:16px;white-space:nowrap;cursor:pointer;position:relative">
+                {{ st.label }}
+                <sc-if value="{{ st.showCount }}" hint-placeholder-val="{{ false }}">
+                  <span style="position:absolute;top:2px;margin-left:2px;display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:#3D15E0;color:#FFFFFF;font-size:12px">{{ st.count }}</span>
+                </sc-if>
+              </button>
+            </sc-for>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;position:relative">
+            <div style="position:relative">
+              <button onClick="{{ toggleTimeFilter }}" style="display:flex;align-items:center;padding:8px 16px;border:1px solid #3D15E0;border-radius:8px;font-size:16px;line-height:28px;color:{{ timeTriggerColor }};background:{{ timeTriggerBg }};white-space:nowrap;cursor:pointer">Time period</button>
+              <sc-if value="{{ timeFilterOpen }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;top:52px;left:0;z-index:2000;background:#FFFFFF;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.10);padding:16px;display:flex;flex-direction:column;gap:12px;min-width:240px">
+                  <sc-for list="{{ timeOptions }}" as="opt" hint-placeholder-count="5">
+                    <div onClick="{{ opt.select }}" style="display:flex;align-items:center;cursor:pointer">
+                      <span style="width:24px;height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-right:8px"><span style="width:24px;height:24px;border-radius:50%;background:#FFFFFF;border:{{ opt.dotBorder }};box-sizing:border-box"></span></span>
+                      <span style="font-size:16px;user-select:none">{{ opt.label }}</span>
+                    </div>
+                  </sc-for>
+                  <input type="text" placeholder="Choose date range" style="box-sizing:border-box;min-height:44px;padding:8px;font-size:16px;background:#FFFFFF;border:1px solid #CED9DE;border-radius:8px;color:#222222">
+                </div>
+              </sc-if>
+            </div>
+            <div style="position:relative">
+              <button onClick="{{ toggleTypeFilter }}" style="display:flex;align-items:center;padding:8px 16px;border:1px solid #3D15E0;border-radius:8px;font-size:16px;line-height:28px;color:{{ typeTriggerColor }};background:{{ typeTriggerBg }};white-space:nowrap;cursor:pointer">Reason of contact</button>
+              <sc-if value="{{ typeFilterOpen }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;top:52px;left:0;z-index:2000;background:#FFFFFF;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.10);padding:16px;display:flex;flex-direction:column;gap:12px;min-width:280px">
+                  <input type="text" placeholder="Search by reason of contact" style="box-sizing:border-box;padding:8px 0;font-size:16px;background:transparent;border:none;border-bottom:1px solid #CED9DE;color:#222222;outline:none">
+                  <sc-for list="{{ typeOptions }}" as="opt" hint-placeholder-count="5">
+                    <div onClick="{{ opt.select }}" style="display:flex;align-items:center;gap:8px;cursor:pointer">
+                      <span style="width:22px;height:22px;flex-shrink:0;border-radius:4px;border:{{ opt.border }};background-color:{{ opt.bg }};background-image:url('assets/icons/checkmark.svg');background-repeat:no-repeat;background-position:center;background-size:12px;box-sizing:border-box"></span>
+                      <span style="font-size:16px;user-select:none">{{ opt.label }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+            </div>
+            <input type="text" placeholder="Search patient" onChange="{{ onSearch }}" style="flex:0 1 280px;box-sizing:border-box;padding:8px;font-size:16px;background:transparent;border:none;border-bottom:1px solid #CED9DE;color:#222222;outline:none">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:grid;grid-template-columns:44px 190px 220px 280px 1fr;align-items:center;background:#E6ECEF;border-radius:4px">
+              <div style="display:flex;align-items:center;height:46px;padding:8px;font-size:18px;font-weight:500"></div>
+              <div style="display:flex;align-items:center;gap:8px;height:46px;padding:8px;font-size:18px;font-weight:500;cursor:pointer">
+                <span style="display:inline-block;width:16px;height:16px;flex-shrink:0;background:#222222;-webkit-mask:url('assets/icons/sort_descending.svg') center/contain no-repeat;mask:url('assets/icons/sort_descending.svg') center/contain no-repeat"></span>
+                Last update
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;height:46px;padding:8px;font-size:18px;font-weight:500;position:relative">
+                Reason of contact
+                <button onClick="{{ toggleReasonHotspot }}" aria-label="About reason of contact" data-motion="decorative" style="width:22px;height:22px;flex-shrink:0;border-radius:50%;background:#DC3545;border:3px solid #FFFFFF;cursor:pointer;animation:hotspot-pulse-red 2.4s cubic-bezier(0.33,1,0.68,1) infinite;padding:0"></button>
+                <sc-if value="{{ reasonHotspotOpen }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:absolute;top:52px;left:0;width:300px;background:#222222;color:#FFFFFF;border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.5;font-weight:400;box-shadow:0 4px 20px rgba(0,0,0,0.25);z-index:2100">
+                    Every message is tagged with the patient's chief complaint at a glance, so staff can triage by reading the colour before the text.
+                    <div style="position:absolute;top:-6px;left:24px;transform:rotate(45deg);width:12px;height:12px;background:#222222"></div>
+                  </div>
+                </sc-if>
+              </div>
+              <div style="display:flex;align-items:center;height:46px;padding:8px;font-size:18px;font-weight:500">Patient</div>
+              <div style="display:flex;align-items:center;height:46px;padding:8px;font-size:18px;font-weight:500">Message preview</div>
+            </div>
+            <sc-for list="{{ rows }}" as="row" hint-placeholder-count="4">
+              <div onClick="{{ row.open }}" style="display:grid;grid-template-columns:44px 190px 220px 280px 1fr;align-items:center;background:#FCFCFC;border-radius:4px;cursor:pointer;animation:{{ row.pulse }}">
+                <div style="height:46px"></div>
+                <div style="display:flex;align-items:center;height:46px;padding:8px;font-weight:500;white-space:nowrap">{{ row.sent }}</div>
+                <div style="display:flex;align-items:center;height:46px;padding:8px">
+                  <span style="display:block;width:100%;padding:6px 16px;border-radius:16px;background:{{ row.badgeColor }};color:#17172B;font-size:16px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-sizing:border-box">{{ row.reason }}</span>
+                </div>
+                <div style="display:flex;align-items:center;height:46px;padding:8px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ row.patient }}</div>
+                <div style="display:flex;align-items:center;height:46px;padding:8px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0"><span style="overflow:hidden;text-overflow:ellipsis">{{ row.message }}</span></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="E-contact detail" style="display:flex;flex-direction:column;min-height:100%;padding:16px 24px 24px;box-sizing:border-box">
+          <div style="display:flex;align-items:center;gap:16px;padding-bottom:8px">
+            <button onClick="{{ goDashboard }}" style="display:inline-flex;align-items:center;gap:0.35rem;min-height:2rem;background:transparent;border:none;padding:0;color:#3D15E0;font-size:16px;cursor:pointer" aria-label="Back">
+              <img src="assets/icons/chevron-left-menu.svg" alt="" style="width:40px;height:40px;display:block">
+              <span>Back</span>
+            </button>
+            <h1 style="font-family:'GT Planar','Public Sans',sans-serif;font-weight:300;font-size:32px;line-height:1;margin:0">Anonymous patient</h1>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;column-gap:24px;row-gap:4px;padding:2px 8px;background:#E2E1DF;border-radius:4px;margin-bottom:16px;align-self:flex-start">
+            <span style="display:inline-flex;align-items:center;gap:6px;font-size:16px;padding:4px 0">
+              <span style="display:inline-block;width:21px;height:21px;background:#3D15E0;-webkit-mask:url('assets/icons/business-card.svg') center/contain no-repeat;mask:url('assets/icons/business-card.svg') center/contain no-repeat"></span>
+              Code ZNA-2481-9073
+              <span style="display:inline-block;width:16px;height:16px;background:#666666;-webkit-mask:url('assets/icons/copy.svg') center/contain no-repeat;mask:url('assets/icons/copy.svg') center/contain no-repeat;cursor:pointer"></span>
+            </span>
+            <span style="display:inline-flex;align-items:center;gap:6px;font-size:16px;padding:4px 0;color:#666666">Checked in 18.08.2026 14:07 · Zentrale Notaufnahme</span>
+          </div>
+          <div style="display:grid;grid-template-columns:calc(65% - 1px) 16px calc(35% - 17px);flex:1;min-height:0">
+            <div style="display:flex;flex-direction:column;border-radius:8px;background:#FFFFFF;box-shadow:0 4px 15px rgba(0,0,0,0.15);padding:8px 0">
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 16px;position:relative">
+                <span style="display:inline-block;padding:6px 16px;border-radius:16px;background:#AFBCFF;color:#17172B;font-size:16px;white-space:nowrap">Back pain</span>
+                <button style="display:inline-flex;align-items:center;gap:6px;background:transparent;border:none;padding:0;color:#3D15E0;font-size:14px;cursor:pointer" style-hover="color:#3312BD">
+                  <span style="display:inline-block;width:16px;height:16px;background:#3D15E0;-webkit-mask:url('assets/icons/copy.svg') center/contain no-repeat;mask:url('assets/icons/copy.svg') center/contain no-repeat"></span>
+                  Copy
+                </button>
+                <button onClick="{{ toggleCopyHotspot }}" aria-label="About copying" data-motion="decorative" style="width:22px;height:22px;flex-shrink:0;border-radius:50%;background:#DC3545;border:3px solid #FFFFFF;cursor:pointer;animation:hotspot-pulse-red 2.4s cubic-bezier(0.33,1,0.68,1) infinite;padding:0"></button>
+                <sc-if value="{{ copyHotspotOpen }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:absolute;top:44px;left:120px;width:320px;background:#222222;color:#FFFFFF;border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.5;box-shadow:0 4px 20px rgba(0,0,0,0.25);z-index:30">
+                    Copies the message to the clipboard so it can be pasted into the EHR. Direct integrations with the hospital's main software are possible, but need to be discussed and require EHR vendor access.
+                    <div style="position:absolute;top:-6px;left:24px;transform:rotate(45deg);width:12px;height:12px;background:#222222"></div>
+                  </div>
+                </sc-if>
+              </div>
+              <div style="padding:8px 16px;font-size:16px;line-height:1.4">
+                <span style="color:#666666">[18.08.2026 14:32] </span>
+                <span style="font-weight:600">E-contact: </span>
+                <span style="white-space:pre-line">Reason for contact: Lower back pain, right side, started 3 days ago after lifting boxes at work.
+
+Additional information: Pain worsens on bending forward and prolonged sitting, radiates to the right thigh. Pain intensity 6/10 at worst, 3/10 at rest. No fever, no numbness or weakness in the legs, no bladder or bowel symptoms. Sleep is disturbed by turning in bed. Paracetamol gave partial relief. No previous back injuries. Works in a warehouse, lifts regularly.
+
+Allergies: Penicillin (hives), aspirin (rash), latex (contact irritation). No known food allergies.
+
+Surgical history: Appendectomy 2011, arthroscopy of the left knee 2019. No spinal surgery.
+
+Medications (confirmed from medication plan): Ramipril 5 mg 1-0-0-0, Metformin 850 mg 1-0-1-0, Ibuprofen 400 mg (dose changed, now taken twice daily). Nothing else taken regularly.</span>
+              </div>
+              <div style="display:flex;justify-content:flex-end;align-items:center;gap:8px;padding:8px 16px;position:relative">
+                <sc-if value="{{ docReady }}" hint-placeholder-val="{{ false }}">
+                  <button style="display:inline-flex;align-items:center;gap:6px;background:transparent;border:none;padding:0 8px;color:#3D15E0;font-size:14px;cursor:pointer" style-hover="color:#3312BD">
+                    <span style="display:inline-block;width:16px;height:16px;background:#3D15E0;-webkit-mask:url('assets/icons/copy.svg') center/contain no-repeat;mask:url('assets/icons/copy.svg') center/contain no-repeat"></span>
+                    Copy
+                  </button>
+                </sc-if>
+                <button onClick="{{ toggleDocHotspot }}" aria-label="About documentation" data-motion="decorative" style="width:22px;height:22px;flex-shrink:0;border-radius:50%;background:#DC3545;border:3px solid #FFFFFF;cursor:pointer;animation:hotspot-pulse-red 2.4s cubic-bezier(0.33,1,0.68,1) infinite;padding:0"></button>
+                <sc-if value="{{ docHotspotOpen }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:absolute;bottom:44px;right:16px;width:320px;background:#222222;color:#FFFFFF;border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.5;box-shadow:0 4px 20px rgba(0,0,0,0.25);z-index:30">
+                    AI-based summarisation. It condenses the patient's own words into a shorter clinical note, rewritten in the tense and phrasing used for documentation, so it can be filed with minimal editing.
+                    <div style="position:absolute;bottom:-6px;right:24px;transform:rotate(45deg);width:12px;height:12px;background:#222222"></div>
+                  </div>
+                </sc-if>
+                <button onClick="{{ createDocumentation }}" data-motion="decorative" style="display:inline-flex;align-items:center;gap:8px;min-height:2rem;border-radius:3rem;border:1px solid {{ docColor }};background:transparent;color:{{ docColor }};font-size:16px;padding:4px 16px;cursor:pointer;animation:{{ docPulse }}">
+                  <sc-if value="{{ docLoading }}" hint-placeholder-val="{{ false }}">
+                    <span style="display:inline-block;width:16px;height:16px;border-radius:50%;border:2px solid #D3C9FF;border-top-color:#3D15E0;animation:spin 0.8s linear infinite"></span>
+                  </sc-if>
+                  <sc-if value="{{ docReady }}" hint-placeholder-val="{{ false }}">
+                    <span style="display:inline-block;width:16px;height:16px;background:#22967F;-webkit-mask:url('assets/icons/checkmark.svg') center/contain no-repeat;mask:url('assets/icons/checkmark.svg') center/contain no-repeat"></span>
+                  </sc-if>
+                  {{ docLabel }}
+                </button>
+              </div>
+              <sc-if value="{{ docReady }}" hint-placeholder-val="{{ false }}">
+                <div style="margin:0 16px 8px;padding:12px 16px;background:#F0ECFD;border-radius:8px;display:flex;flex-direction:column;gap:8px">
+                  <span style="font-size:14px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:#3D15E0">Documentation draft</span>
+                  <span style="font-size:16px;line-height:1.4;white-space:pre-line">History: Right-sided lower back pain for 3 days following a lifting injury at work. Worse on flexion and prolonged sitting, radiating into the right thigh. Pain 6/10 at worst, 3/10 at rest.
+
+Negatives: no fever, no sensory loss or weakness, no bladder or bowel dysfunction.
+
+Allergies: penicillin (urticaria), aspirin (rash), latex.
+
+Previous surgery: appendectomy 2011, left knee arthroscopy 2019.
+
+Medication: Ramipril 5 mg 1-0-0-0, Metformin 850 mg 1-0-1-0, Ibuprofen 400 mg 1-0-1-0 (dose change, confirmed by the patient).</span>
+                  <div style="display:flex;justify-content:flex-end">
+                    <button style="display:inline-flex;align-items:center;gap:6px;background:transparent;border:none;padding:0;color:#3D15E0;font-size:14px;cursor:pointer" style-hover="color:#3312BD">
+                      <span style="display:inline-block;width:16px;height:16px;background:#3D15E0;-webkit-mask:url('assets/icons/copy.svg') center/contain no-repeat;mask:url('assets/icons/copy.svg') center/contain no-repeat"></span>
+                      Copy
+                    </button>
+                  </div>
+                </div>
+              </sc-if>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:center;cursor:col-resize">
+              <div style="width:4px;height:48px;border-radius:4px;background:#C2CFD6"></div>
+            </div>
+            <div style="display:flex;flex-direction:column;border-radius:8px;background:#FFFFFF;box-shadow:0 4px 15px rgba(0,0,0,0.15);padding:8px 0;min-width:0">
+              <div style="display:flex;flex-wrap:wrap;padding:0 8px">
+                <sc-for list="{{ tabs }}" as="tab" hint-placeholder-count="2">
+                  <button onClick="{{ tab.select }}" style="flex:1 0 auto;padding:8px 24px 8px 16px;background:transparent;border:none;border-bottom:{{ tab.borderBottom }};color:{{ tab.color }};font-size:16px;white-space:nowrap;cursor:pointer;position:relative">
+                    {{ tab.label }}
+                    <sc-if value="{{ tab.showCount }}" hint-placeholder-val="{{ false }}">
+                      <span style="position:absolute;top:2px;margin-left:2px;display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:#3D15E0;color:#FFFFFF;font-size:12px">{{ tab.count }}</span>
+                    </sc-if>
+                  </button>
+                </sc-for>
+              </div>
+              <div style="padding:24px 16px;font-size:16px">
+                <sc-if value="{{ isFilesTab }}" hint-placeholder-val="{{ true }}">
+                  <div style="display:flex;flex-direction:column;gap:12px">
+                    <div style="display:flex;align-items:center;gap:12px;background:#FCFCFC;border:1px solid #E6ECEF;border-radius:8px;padding:8px">
+                      <img onClick="{{ openGallery }}" src="assets/back-pain-photo.avif" alt="Lower back pain area" style="width:64px;height:64px;flex-shrink:0;border-radius:8px;object-fit:cover;cursor:zoom-in">
+                      <div style="display:flex;flex-direction:column;gap:2px;min-width:0">
+                        <span style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">lower-back-pain-area.jpg</span>
+                        <span style="font-size:14px;color:#666666">Added by patient · 18.08.2026 14:31</span>
+                        <span style="display:inline-flex;align-items:center;gap:6px;font-size:14px;color:#22967F">
+                          <span style="display:inline-block;width:16px;height:16px;flex-shrink:0;background:#22967F;-webkit-mask:url('assets/icons/checkmark-shield.svg') center/contain no-repeat;mask:url('assets/icons/checkmark-shield.svg') center/contain no-repeat"></span>
+                          Scanned, no viruses found
+                        </span>
+                      </div>
+                    </div>
+                    <span style="font-size:14px;color:#666666">1/1 files uploaded successfully</span>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ isNotesTab }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;gap:8px">
+                    <span style="font-weight:600">No notes</span>
+                    <span style="font-size:14px;color:#666666;line-height:1.4">With notes, you can share information about the patient's e-contacts within the clinic.</span>
+                    <textarea placeholder="Write a note to other employees" style="width:100%;box-sizing:border-box;min-height:73px;resize:none;font-size:16px;line-height:1.3;background:#FFFFFF;border:1px solid #CED9DE;border-radius:8px;padding:8px;color:#222222;margin-top:8px"></textarea>
+                    <div style="display:flex;justify-content:flex-end">
+                      <button style="display:inline-flex;align-items:center;min-height:2.5rem;border-radius:3rem;border:1px solid #3D15E0;background:#3D15E0;color:#FFFFFF;font-size:16px;padding:8px 24px;cursor:pointer;transition:all 300ms" style-hover="background:#3312BD;border-color:#3312BD">Submit</button>
+                    </div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ isOtherTab }}" hint-placeholder-val="{{ false }}">
+                  <span style="color:#666666">No other queries from this patient.</span>
+                </sc-if>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ galleryOpen }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ closeGallery }}" style="position:fixed;inset:0;z-index:3000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:rgba(74,114,135,0.1);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);padding:40px">
+          <div style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;border-radius:24px;box-shadow:0 4px 20px rgba(0,0,0,0.15);padding:16px;max-width:760px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:16px">
+              <span style="font-size:16px;font-weight:600">lower-back-pain-area.jpg</span>
+              <button onClick="{{ closeGallery }}" aria-label="Close" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;border:none;background:#F4F6F7;color:#222222;font-size:18px;cursor:pointer" style-hover="background:#ECEFF0">×</button>
+            </div>
+            <img src="assets/back-pain-photo.avif" alt="Lower back pain area" style="display:block;max-width:100%;max-height:60vh;border-radius:8px;object-fit:contain">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:16px">
+              <span style="font-size:14px;color:#666666">Added by patient · 18.08.2026 14:31</span>
+              <span style="display:inline-flex;align-items:center;gap:6px;font-size:14px;color:#22967F">
+                <span style="display:inline-block;width:16px;height:16px;flex-shrink:0;background:#22967F;-webkit-mask:url('assets/icons/checkmark-shield.svg') center/contain no-repeat;mask:url('assets/icons/checkmark-shield.svg') center/contain no-repeat"></span>
+                Scanned, no viruses found
+              </span>
+            </div>
+          </div>
+          <span style="font-size:14px;color:#FFFFFF">1 of 1</span>
+        </div>
+      </sc-if>
+
+    </div>
+  </x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;clinicName&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;Universitätsklinikum München, ZNA&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Content&quot;}}">
+class Component extends DCLogic {
+  state = {
+    view: 'dashboard', tab: 'Files', status: 'Awaiting action', galleryOpen: false, doc: 'idle', openHotspot: null,
+    timeFilterOpen: false, typeFilterOpen: false, timeSel: null, typeSel: {}, search: '',
+  };
+
+  renderVals() {
+    const s = this.state;
+    const rowData = [
+      { sent: '12 min ago', day: 'today', reason: 'Back pain', badgeColor: '#AFBCFF', patient: 'Anonymous (ZNA-2481-9073)', message: 'Reason for contact: Lower back pain, right side, started 3 days ago after lifting boxes at work.', highlight: true },
+      { sent: '28 min ago', day: 'today', reason: 'Chest pain', badgeColor: '#ffccc7', patient: 'Markus Brandt', message: 'Pressure in the chest when climbing stairs, started this morning.' },
+      { sent: '1 h 4 min ago', day: 'today', reason: 'Skin rash', badgeColor: '#fbd8a3', patient: 'Anna Keller', message: 'Itchy rash on both forearms after gardening on Saturday.' },
+      { sent: '2 h 41 min ago', day: 'today', reason: 'Abdominal pain', badgeColor: '#fdeaa3', patient: 'Anonymous (ZNA-2481-8817)', message: 'Cramping pain in the lower abdomen since last night, no vomiting.' },
+      { sent: '17.08.2026', day: 'yesterday', reason: 'Headache', badgeColor: '#93D2C7', patient: 'Jonas Vogel', message: 'Recurring headaches in the afternoon for two weeks, worse with screens.' },
+    ];
+    const anyType = Object.values(s.typeSel).some(Boolean);
+    const rows = rowData.filter((r) => {
+      if (s.timeSel === 'Today' && r.day !== 'today') return false;
+      if (s.timeSel === 'Yesterday' && r.day !== 'yesterday') return false;
+      if (s.timeSel === 'Older than 30 days') return false;
+      if (anyType && !s.typeSel[r.reason]) return false;
+      if (s.search && !r.patient.toLowerCase().includes(s.search.toLowerCase())) return false;
+      return true;
+    }).map((r) => ({
+      ...r,
+      pulse: r.highlight ? 'row-pulse 2.4s cubic-bezier(0.33,1,0.68,1) infinite' : 'none',
+      open: () => { if (r.highlight) this.setState({ view: 'detail' }); },
+    }));
+
+    const statusNames = ['Awaiting action', 'Completed'];
+    const statusTabs = statusNames.map((name) => {
+      const active = s.status === name;
+      return {
+        label: name,
+        count: rows.length,
+        showCount: active,
+        color: active ? '#222222' : '#666666',
+        borderBottom: active ? '2px solid #3D15E0' : '1px solid #DAE3E7',
+        select: () => this.setState({ status: name }),
+      };
+    });
+
+    const timeNames = ['Today', 'Yesterday', 'This week', 'This month', 'Older than 30 days'];
+    const timeOptions = timeNames.map((label) => ({
+      label,
+      dotBorder: s.timeSel === label ? '6px solid #3D15E0' : '1px solid #C2CFD6',
+      select: () => this.setState({ timeSel: s.timeSel === label ? null : label }),
+    }));
+
+    const typeNames = ['Back pain', 'Chest pain', 'Skin rash', 'Abdominal pain', 'Headache'];
+    const typeOptions = typeNames.map((label) => {
+      const checked = !!s.typeSel[label];
+      return {
+        label,
+        bg: checked ? '#3D15E0' : '#FFFFFF',
+        border: checked ? '2px solid #3D15E0' : '2px solid #666666',
+        select: () => this.setState({ typeSel: { ...s.typeSel, [label]: !checked } }),
+      };
+    });
+
+    const tabDefs = [
+      { name: 'Files', count: 1 },
+      { name: 'Notes' },
+    ];
+    const tabs = tabDefs.map((tab) => {
+      const active = s.tab === tab.name;
+      return {
+        label: tab.name,
+        count: tab.count,
+        showCount: !!tab.count,
+        color: active ? '#222222' : '#666666',
+        borderBottom: active ? '2px solid #3D15E0' : '1px solid #DAE3E7',
+        select: () => this.setState({ tab: tab.name }),
+      };
+    });
+
+    return {
+      rows, tabs, statusTabs, timeOptions, typeOptions,
+      timeFilterOpen: s.timeFilterOpen,
+      typeFilterOpen: s.typeFilterOpen,
+      toggleTimeFilter: () => this.setState({ timeFilterOpen: !s.timeFilterOpen, typeFilterOpen: false }),
+      toggleTypeFilter: () => this.setState({ typeFilterOpen: !s.typeFilterOpen, timeFilterOpen: false }),
+      timeTriggerColor: s.timeSel ? '#222222' : '#666666',
+      timeTriggerBg: s.timeSel ? '#F0ECFD' : 'transparent',
+      typeTriggerColor: Object.values(s.typeSel).some(Boolean) ? '#222222' : '#666666',
+      typeTriggerBg: Object.values(s.typeSel).some(Boolean) ? '#F0ECFD' : 'transparent',
+      onSearch: (e) => this.setState({ search: e.target.value }),
+      galleryOpen: s.galleryOpen,
+      openGallery: () => this.setState({ galleryOpen: true, tab: 'Files' }),
+      closeGallery: () => this.setState({ galleryOpen: false }),
+      copyHotspotOpen: s.openHotspot === 'copy',
+      toggleCopyHotspot: () => this.setState({ openHotspot: s.openHotspot === 'copy' ? null : 'copy' }),
+      docHotspotOpen: s.openHotspot === 'doc',
+      toggleDocHotspot: () => this.setState({ openHotspot: s.openHotspot === 'doc' ? null : 'doc' }),
+      reasonHotspotOpen: s.openHotspot === 'reason',
+      toggleReasonHotspot: () => this.setState({ openHotspot: s.openHotspot === 'reason' ? null : 'reason' }),
+      docLoading: s.doc === 'loading',
+      docReady: s.doc === 'ready',
+      docPulse: s.doc === 'idle' ? 'cta-pulse 2.4s cubic-bezier(0.33,1,0.68,1) infinite' : 'none',
+      docColor: s.doc === 'ready' ? '#22967F' : '#3D15E0',
+      docLabel: s.doc === 'ready' ? 'Documentation done' : 'Create documentation',
+      createDocumentation: () => {
+        if (s.doc === 'loading') return;
+        this.setState({ doc: 'loading' });
+        setTimeout(() => this.setState({ doc: 'ready' }), 2000);
+      },
+      clinicName: this.props.clinicName ?? 'Universitätsklinikum München, ZNA',
+      isDashboard: s.view === 'dashboard',
+      isDetail: s.view === 'detail',
+      isNotesTab: s.tab === 'Notes',
+      isFilesTab: s.tab === 'Files',
+      isOtherTab: false,
+      goDashboard: () => this.setState({ view: 'dashboard' }),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+/* Certific — SLIDE DECK LAYER
+ * Source of truth: deck_layer.md
+ *
+ * Foundation is unchanged: same brand colours, Inter display, Public Sans body,
+ * Instrument Serif italic accents. What differs is SIZING — every value on a slide is a
+ * percentage of stage width (`cqw`), never a fixed px, so a deck renders identically at
+ * any projection size. The platform spacing scale deliberately does not apply here.
+ *
+ * Requires colors_and_type.css for the brand tokens.
+ */
+
+:root {
+  /* ---------- Deck canvas ---------- */
+  --deck-backdrop:      #0E0B1A;  /* near-black surround behind the stage */
+  --deck-stage-radius:  18px;
+  --deck-stage-shadow:  0 24px 60px rgba(0,0,0,0.45);
+
+  /* ---------- Deck surfaces ---------- */
+  --deck-wash-lake:     linear-gradient(160deg, #FFFFFF 0%, #F3F6F7 100%); /* @kind color */
+  --deck-wash-concrete: linear-gradient(160deg, #FFFFFF 0%, #F4F4F4 100%); /* @kind color */
+  --deck-dark:          #2A1170;  /* cover + closing stages */
+  --deck-panel-tint:    #F2EEFB;  /* lavender feature panel */
+
+  /* ---------- Deck chrome ---------- */
+  --deck-tag-bg:        #91E6D5;  /* Turquoise Pearl section tag */
+  --deck-tag-fg:        #0E5A49;
+  --deck-chrome-fg:     #A7A7A7;  /* deck name + page number */
+
+  /* ---------- Proportional geometry (1 unit = 1% of stage width) ---------- */
+  --deck-pad-x:         7cqw;
+  --deck-pad-y:         3cqw;
+  /* Title sizes. Dense slides run 3.4–3.7cqw; stat numbers are the largest type on a slide. */
+  --deck-title:         4.4cqw; /* @kind font */
+  --deck-title-dense:   3.5cqw; /* @kind font */
+  --deck-stat:          4.6cqw; /* @kind font */
+  --deck-body:          1.65cqw;  /* @kind font */
+  --deck-kick:          1.3cqw;  /* @kind font */
+  --deck-title-track:   -0.03em;
+  --deck-kick-track:    0.16em;
+
+  /* ---------- Status lanes (confidence tiers) ---------- */
+  --deck-done:          #22967F;  /* done / win */
+  --deck-wip:           #AB5CFA;  /* in progress */
+  --deck-watch:         #FAFF01;  /* watch / risk — needs an outline, fails on light */
+  --deck-watch-edge:    #C8CC00;
+
+  /* ---------- Data-honesty ---------- */
+  --deck-plan-tint:     rgba(61,21,224,0.035);  /* every plan/forecast column */
+  --deck-plan-rule:     var(--blue-40);          /* dashed ACTUAL|PLAN divider */
+  --deck-illus:         #AB5CFA;                 /* illustrative, excluded from plan */
+  --deck-hatch:         repeating-linear-gradient(45deg, rgba(255,255,255,0.55) 0 3px, transparent 3px 7px); /* @kind other */
+  --deck-hatch-illus:   repeating-linear-gradient(45deg, rgba(171,92,250,0.14) 0 4px, transparent 4px 9px); /* @kind other */
+}
+
+/* ============ STAGE ============ */
+.deck-backdrop { background: var(--deck-backdrop); padding: 3%; }
+
+.slide {
+  box-sizing: border-box;
+  container-type: inline-size;
+  aspect-ratio: 16 / 9; position: relative; overflow: hidden;
+  background: #fff; color: var(--black-100);
+  border-radius: var(--deck-stage-radius); box-shadow: var(--deck-stage-shadow);
+  padding: var(--deck-pad-y) var(--deck-pad-x);
+  display: flex; flex-direction: column;
+  font-family: var(--font-sans);
+}
+.slide > * { position: relative; z-index: 1; }
+
+.slide--lake     { background: var(--deck-wash-lake); }
+.slide--concrete { background: var(--deck-wash-concrete); }
+.slide--dark     { background: var(--deck-dark); color: #fff; }
+/* Violet glows on the dark stage. Decorative — sits under content. */
+.slide--dark::before {
+  content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(46% 52% at 82% 16%, rgba(171,92,250,0.42), transparent 70%),
+    radial-gradient(40% 46% at 12% 88%, rgba(139,115,236,0.34), transparent 72%),
+    radial-gradient(34% 38% at 46% 40%, rgba(61,21,224,0.30), transparent 74%);
+}
+
+/* Header / body / footer. Body flexes so the slide can never overflow its stage. */
+.slide__head { flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 2cqw; }
+.slide__body { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; justify-content: center; gap: 2.4cqw; padding: 2.4cqw 0; }
+.slide__foot { flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 2cqw; font-size: 1.3cqw; color: var(--deck-chrome-fg); }
+.slide--dark .slide__foot { color: rgba(255,255,255,0.55); }
+
+/* Header brandmark = symbol + typed "Certific". Never the wordmark file plus a typed
+   name together. The wordmark files are for standalone use only (document title pages). */
+.slide__brandmark { display: inline-flex; align-items: center; gap: 0.8cqw; }
+.slide__brandmark img { height: 2.5cqw; width: auto; display: block; }
+.slide--cover .slide__brandmark img,
+.slide--closing .slide__brandmark img { height: 3.8cqw; }
+.slide__brand { font-family: var(--font-display); font-weight: 500; font-size: 1.9cqw; letter-spacing: -0.02em; color: var(--black-100); }
+.slide--cover .slide__brand,
+.slide--closing .slide__brand { font-size: 2.9cqw; }
+.slide--dark .slide__brand { color: #fff; }
+
+/* Standalone wordmark — document title pages and exports, where the logo stands alone. */
+.brand-wordmark { display: block; height: auto; }
+
+.slide__tag { background: var(--deck-tag-bg); color: var(--deck-tag-fg); border-radius: 999px; padding: 0.5cqw 1.4cqw; font-size: 1.3cqw; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap; }
+
+/* Page numbers are generated, never typed into content — so they can't drift. */
+.deck { counter-reset: slide; }
+.deck .slide { counter-increment: slide; }
+.slide__page::after { content: counter(slide, decimal-leading-zero); }
+
+/* ============ SLIDE TYPE ============ */
+.kick { display: inline-flex; align-items: center; gap: 1.2cqw; font-size: var(--deck-kick); font-weight: 700; letter-spacing: var(--deck-kick-track); text-transform: uppercase; color: var(--blue-100); }
+.kick::before { content: ''; width: 3cqw; height: 2px; background: currentColor; flex: 0 0 auto; }
+.slide--dark .kick { color: var(--deck-tag-bg); }
+
+.slide-title { font-family: var(--font-display); font-weight: 300; font-size: var(--deck-title); letter-spacing: var(--deck-title-track); line-height: 1.08; margin: 0; color: inherit; text-wrap: pretty; }
+.slide-title--dense { font-size: var(--deck-title-dense); }
+
+/* The signature move. One accent phrase per title, on the emphasised 1–3 words only. */
+.slide-title em, .accent { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-weight: 400; color: var(--blue-100); }
+.slide--dark .slide-title em, .slide--dark .accent { color: var(--deck-tag-bg); }
+
+.slide-lede { font-size: 1.8cqw; line-height: 1.45; color: var(--black-60); max-width: 62cqw; margin: 0; }
+.slide--dark .slide-lede { color: rgba(255,255,255,0.72); }
+
+/* Bulleted body — round check badges, 3–5 items max. */
+.deck-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1.5cqw; }
+.deck-list li { display: flex; align-items: flex-start; gap: 1.4cqw; font-size: var(--deck-body); line-height: 1.45; color: var(--black-80); }
+.slide--dark .deck-list li { color: rgba(255,255,255,0.82); }
+.chk { flex: 0 0 auto; width: 2.2cqw; height: 2.2cqw; border-radius: 50%; background: var(--blue-10); position: relative; margin-top: 0.15cqw; }
+.chk::after { content: ''; position: absolute; left: 37%; top: 21%; width: 24%; height: 44%; border: solid var(--blue-100); border-width: 0 0.26cqw 0.26cqw 0; transform: rotate(45deg); }
+
+/* ============ COMPONENTS ============ */
+
+/* Gradient-top card — for 3–4 parallel points. */
+.deck-card { box-sizing: border-box; background: #fff; border-radius: 1cqw; padding: 2.2cqw; box-shadow: 0 0.3cqw 1.2cqw rgba(0,0,0,0.07); position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 1.2cqw; }
+.deck-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #3D15E0, #AB5CFA, #91E6D5); }
+.deck-card__icon { width: 3.4cqw; height: 3.4cqw; border-radius: 50%; background: var(--blue-10); color: var(--blue-100); display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+.deck-card__title { font-family: var(--font-display); font-weight: 500; font-size: 1.9cqw; letter-spacing: -0.02em; margin: 0; color: var(--black-100); }
+.deck-card__body { font-size: 1.35cqw; line-height: 1.45; color: var(--black-60); margin: 0; }
+
+/* Tinted feature panel — lavender, soft pink/blue glows, 4-column feature grid. */
+.deck-panel { box-sizing: border-box; background: var(--deck-panel-tint); border-radius: 1.4cqw; padding: 2.6cqw; position: relative; overflow: hidden; }
+.deck-panel::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(40% 60% at 88% 12%, rgba(252,200,220,0.55), transparent 70%), radial-gradient(44% 62% at 6% 92%, rgba(61,21,224,0.10), transparent 72%); }
+.deck-panel > * { position: relative; z-index: 1; }
+.deck-features { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2cqw; }
+.deck-feature__title { font-weight: 600; font-size: 1.4cqw; margin: 0.9cqw 0 0.4cqw; color: var(--black-100); }
+.deck-feature__line { font-size: 1.2cqw; line-height: 1.4; color: var(--black-60); margin: 0; }
+
+/* Status lanes — confidence-tiered takeaways. */
+.lane { box-sizing: border-box; background: #fff; border-radius: 0.9cqw; padding: 1.7cqw 1.8cqw; border-top: 3px solid var(--black-20); box-shadow: 0 0.25cqw 1cqw rgba(0,0,0,0.06); display: flex; flex-direction: column; gap: 0.8cqw; }
+.lane__head { display: flex; align-items: center; gap: 0.9cqw; font-size: 1.3cqw; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--black-60); }
+.lane__dot { width: 0.9cqw; height: 0.9cqw; border-radius: 50%; flex: 0 0 auto; }
+.lane__body { font-size: 1.35cqw; line-height: 1.45; color: var(--black-80); margin: 0; }
+.lane--done  { border-top-color: var(--deck-done); }
+.lane--done  .lane__dot { background: var(--deck-done); }
+.lane--wip   { border-top-color: var(--deck-wip); }
+.lane--wip   .lane__dot { background: var(--deck-wip); }
+/* Lemon can't carry meaning alone at 1.1:1 — the dot gets an edge and the label stays ink. */
+.lane--watch { border-top-color: var(--deck-watch); }
+.lane--watch .lane__dot { background: var(--deck-watch); box-shadow: inset 0 0 0 1px var(--deck-watch-edge); }
+
+/* Stat row — huge Inter Light numbers, thin dividers. */
+.stat-row { display: flex; }
+.stat-row > .stat { flex: 1; padding: 0 2.2cqw; border-left: 1px solid var(--black-20); }
+.stat-row > .stat:first-child { padding-left: 0; border-left: 0; }
+.stat__n { font-family: var(--font-display); font-weight: 300; font-size: var(--deck-stat); letter-spacing: -0.03em; line-height: 1; color: var(--blue-100); display: block; }
+.stat__l { font-size: 1.2cqw; line-height: 1.4; color: var(--black-60); display: block; margin-top: 0.8cqw; }
+
+/* Quotes. */
+.quote-card { box-sizing: border-box; background: var(--crackling-lake-20); border-radius: 1.2cqw; padding: 2.4cqw 2.6cqw 2.4cqw 6.4cqw; position: relative; }
+.quote-card::before { content: '\201C'; position: absolute; left: 1.8cqw; top: 0.6cqw; font-family: 'Instrument Serif', Georgia, serif; font-size: 9cqw; line-height: 1; color: var(--deck-wip); }
+.quote-card__text { font-size: 1.6cqw; line-height: 1.5; color: var(--black-80); margin: 0; }
+.quote-card__by { font-size: 1.3cqw; color: var(--black-60); margin: 1cqw 0 0; }
+.pull-quote { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-size: 2.6cqw; line-height: 1.3; color: var(--blue-100); margin: 0; }
+
+/* Callout — one sentence, max 3 per slide. */
+.callout-deck { box-sizing: border-box; border-radius: 0.9cqw; padding: 1.5cqw 1.9cqw; font-size: 1.4cqw; line-height: 1.45; color: var(--black-80); }
+.callout-deck--lake      { background: var(--crackling-lake-20); }
+.callout-deck--lavender  { background: var(--deck-panel-tint); }
+.callout-deck--turquoise { background: #E9FAF7; }
+.callout-deck--lemon     { background: #FEFFCC; box-shadow: inset 0 0 0 1px rgba(200,204,0,0.5); }
+.callout-deck--conclusion{ background: #E6F4F0; box-shadow: inset 0 0 0 1px rgba(34,150,127,0.28); }
+
+/* ============ DATA HONESTY ============ */
+
+.deck-table { width: 100%; border-collapse: collapse; font-size: 1.35cqw; font-variant-numeric: tabular-nums; }
+.deck-table th, .deck-table td { padding: 0.8cqw 1cqw; text-align: right; border-bottom: 1px solid var(--concrete-gray-60); }
+.deck-table th:first-child, .deck-table td:first-child { text-align: left; }
+.deck-table thead th { font-size: 1.3cqw; font-weight: 600; color: var(--black-80); }
+
+/* Group labels sit above the column band they cover. */
+.grp-label { font-size: 1.3cqw; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--black-60); }
+
+/* History recedes; the emphasis column is tinted so the eye lands on it. */
+.col-hist { color: var(--black-40); }
+.col-emph { background: var(--blue-10); }
+.col-emph-soft { background: rgba(240,236,253,0.5); }
+
+/* PLAN band: dashed divider at the boundary, light tint across every plan column. */
+.col-plan { background: var(--deck-plan-tint); }
+.plan-start { border-left: 1px dashed var(--deck-plan-rule) !important; }
+
+/* Illustrative rows are never summed into plan totals and never read as a subtotal. */
+.row-illus > td { font-style: italic; color: var(--deck-illus); background-image: var(--deck-hatch-illus); border-top: 1px dashed var(--deck-illus); border-bottom: 1px dashed var(--deck-illus); }
+.illus-label { font-size: 1.3cqw; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--deck-illus); font-style: normal; }
+
+/* Cash reads as a balance line, not P&L math. */
+.row-cash > td { border-top: 2px solid var(--black-20); background: rgba(0,0,0,0.03); color: var(--black-80); }
+.row-total > td { font-weight: 700; color: var(--black-100); border-top: 1px solid var(--black-40); }
+
+/* Bars. A forecast is never styled identically to an actual. */
+.bar { height: 1.6cqw; border-radius: 0.2cqw; background: var(--blue-100); }
+.bar--plan { background: var(--blue-40); background-image: var(--deck-hatch); }
+
+/* Change chips. Hue = direction of good, tint depth = magnitude, arrow = redundant signal. */
+.chip-d { display: inline-flex; align-items: center; gap: 0.45em; padding: 0.3em 0.75em; border-radius: 999px; font-size: 1.3cqw; font-weight: 600; color: #17172B; white-space: nowrap; }
+.chip-d--good-1 { background: rgba(34,150,127,0.12); }
+.chip-d--good-2 { background: rgba(34,150,127,0.24); }
+.chip-d--good-3 { background: rgba(34,150,127,0.38); }
+.chip-d--bad-1  { background: rgba(220,53,69,0.10); }
+.chip-d--bad-2  { background: rgba(220,53,69,0.20); }
+.chip-d--bad-3  { background: rgba(220,53,69,0.32); }
+.chip-d--flat   { background: var(--concrete-gray-40); color: var(--black-60); }
+
+/* Sparklines are drawn zero-based per row, so a flat big base looks flat. */
+.spark { display: block; width: 100%; height: 2.6cqw; overflow: visible; }
+.spark__zero   { stroke: var(--black-20); stroke-width: 1; }
+.spark__actual { stroke: var(--blue-100); stroke-width: 1.75; fill: none; stroke-linejoin: round; stroke-linecap: round; }
+.spark__plan   { stroke: var(--blue-40); stroke-width: 1.75; fill: none; stroke-dasharray: 3 3; stroke-linejoin: round; stroke-linecap: round; }
+.spark__dot    { fill: var(--blue-100); }
+
+/* ============ PRINT / PDF ============
+   One full-bleed 16:9 slide per page, colours preserved, no interactive chrome. */
+@media print {
+  @page { size: 1600px 900px; margin: 0; }
+  .deck-backdrop { background: none; padding: 0; }
+  .slide { break-after: page; page-break-after: always; border-radius: 0; box-shadow: none; width: 100%; height: 100vh; }
+  .slide:last-child { break-after: auto; page-break-after: auto; }
+  .deck-nochrome, .deck-nochrome * { display: none !important; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}

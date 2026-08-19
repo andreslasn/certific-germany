@@ -1,0 +1,468 @@
+/* Certific Design System — tokens as CSS custom properties
+ *
+ * TWO LAYERS live here:
+ *   PLATFORM  — the shipped app's tokens. Source of truth:
+ *               code/src/assets/scss/utilities/_variables.scss
+ *   WEBSITE   — the certific.co evolution layer. Source of truth: website_layer.md
+ *               Use for NEW/refreshed surfaces. Never remap platform tokens globally.
+ *               Precedence rules: README § "Coexistence".
+ *
+ * Light scheme only. No dark mode.
+ */
+
+/* Inter (display) + Instrument Serif (editorial accent). Public Sans is self-hosted below. */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@1&display=swap");
+
+/* Legacy. Retained so archived work still renders; do NOT use in new design.
+   The platform replaced GT Planar with Inter. */
+@font-face {
+  font-family: "GT Planar";
+  src: url("fonts/GT-Planar-CERT.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Public Sans";
+  src: url("fonts/Public-Sans.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ---------- Color: brand ---------- */
+  --color-blue:          #3D15E0; /* Interdimensional Blue — primary */
+  --color-blue-hover:    #3312BD;
+  --color-blue-10:       #F0ECFD;
+  --color-light-purple:  #F2F1FF;
+  --color-purple:        #B1A1F3;
+  --color-medium-purple: #8B73EC;
+  --color-dark-purple:   #6644EE;
+  --color-violet:        #EEDEFE;
+  --color-violet-100:    #AB5CFA; /* sparing accent */
+
+  /* ---------- Color: text / surfaces ---------- */
+  --color-black:          #222222; /* Certific Black — body text */
+  --color-extra-dark-grey:#666666; /* muted text */
+  --color-dark-grey:      rgba(34,34,34,0.3);
+  --color-grey:           #CED9DE;
+  --color-grey-50:        #DAE3E7;
+  --color-grey-100:       #C2CFD6;
+  --color-medium-grey:    #E6ECEF;
+  --color-light-grey:     #F4F6F7; /* app background */
+  --color-section-alt-a:  #F3F6F7; /* Crackling Lake 20 */
+  --color-section-alt-b:  #F4F4F4; /* Concrete Gray 20 */
+  --color-brown:          #E2E1DF;
+  --color-brown-5:        #FCFCFC;
+  --color-white:          #FFFFFF;
+
+  /* ---------- Color: semantic ---------- */
+  --color-success:        #22967F; /* green */
+  --color-success-soft:   #91E6D5; /* Turquoise Pearl */
+  --color-danger:         #DC3545;
+  --color-danger-button:  #FF3849;
+  --color-danger-soft:    #F24E29; /* lightRed */
+  --color-warning:        #FAFF01; /* Lemon Glacier — highlight ONLY, never text on light */
+  --color-warning-bg:     #FEF8E6;
+  --color-pink:           #FFDDE0;
+
+  /* ---------- Semantic roles ---------- */
+  --fg-primary:   var(--color-black);
+  --fg-muted:     var(--color-extra-dark-grey);
+  --fg-brand:     var(--color-blue);
+  --fg-danger:    var(--color-danger);
+  --fg-on-brand:  var(--color-white);
+  --bg-app:       var(--color-light-grey);
+  --bg-surface:   var(--color-white);
+  --bg-alt-a:     var(--color-section-alt-a);
+  --bg-alt-b:     var(--color-section-alt-b);
+  --bg-brand:     var(--color-blue);
+  --bg-brand-tint:var(--color-blue-10);
+  --border-subtle:var(--color-grey);
+  --border-strong:var(--color-grey-100);
+  --link:         var(--color-blue);
+  --focus-ring:   0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+
+  /* ---------- Typography ---------- */
+  /* Display is now Inter Light. GT Planar is legacy — see --font-legacy-display. */
+  --font-display: "Inter", "Public Sans", system-ui, sans-serif;
+  --font-sans:    "Public Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-accent:  "Instrument Serif", Georgia, serif; /* italic only, inside headlines */
+  --font-legacy-display: "GT Planar", "Inter", sans-serif;
+
+  --fs-xs:  12px;
+  --fs-sm:  14px;
+  --fs-md:  16px;
+  --fs-lg:  18px;
+  --fs-xl:  24px;
+  --fs-xxl: 32px;
+
+  --lh-sm: 1.3; /* @kind font */
+  --lh-md: 1.4; /* @kind font */
+  --lh-lg: 1.7; /* @kind font */
+
+  --fw-light:   300; /* @kind font */
+  --fw-regular: 400; /* @kind font */
+  --fw-medium:  500; /* @kind font */
+  --fw-semi:    600; /* @kind font */
+
+  /* LEGACY static display sizes. The fluid --headline-* scale below is canonical;
+     these remain only so older kits keep rendering. Don't use in new design. */
+  --display-xl-size:   5rem;   /* 80px hero */
+  --display-lg-size:   3.5rem; /* 56px section */
+  --display-sm-size:   2rem;   /* 32px utility display */
+  --display-tracking: -0.02em;
+
+  /* ===== WEBSITE LAYER: fluid headline scale =====
+     clamp() — shrinks on mobile, locks at desktop. Line-height 1.1 on all. */
+  --headline-xl:          clamp(2.5rem, 6vw + 1rem, 6rem); /* @kind other */ /* 40 → 96 */
+  --headline-xl-tracking: -0.035em;
+  --headline-lg:          clamp(2rem, 4.5vw + 0.75rem, 4rem); /* @kind other */ /* 32 → 64 */
+  --headline-lg-tracking: -0.03em;
+  --headline-md:          clamp(1.75rem, 3.5vw + 0.75rem, 3rem); /* @kind other */ /* 28 → 48 */
+  --headline-md-tracking: -0.025em;
+  --headline-sm:          clamp(1.375rem, 2.5vw + 0.75rem, 2rem); /* @kind other */ /* 22 → 32 */
+  --headline-sm-tracking: -0.01em;
+  --headline-leading: 1.1; /* @kind other */
+
+  /* ===== WEBSITE LAYER: colour ramps ===== */
+  --black-100: #222222;
+  --black-80:  #4E4E4E; /* secondary text */
+  --black-60:  #7A7A7A; /* muted text (new surfaces) */
+  --black-40:  #A7A7A7; /* disabled */
+  --black-20:  #D3D3D3; /* hairlines */
+
+  --blue-100: #3D15E0;
+  --blue-80:  #6644EE;
+  --blue-60:  #8B73EC;
+  --blue-40:  #B1A1F3;
+  --blue-10:  #F0ECFD; /* icon chips, hover fills */
+
+  --crackling-lake-100: #C2CFD6;
+  --crackling-lake-80:  #CED9DE;
+  --crackling-lake-60:  #DAE3E7;
+  --crackling-lake-40:  #E6ECEF;
+  --crackling-lake-20:  #F3F6F7; /* cool alternating surface */
+
+  --concrete-gray-100: #E2E1DF;
+  --concrete-gray-80:  #E8E7E5;
+  --concrete-gray-60:  #EEEDEC;
+  --concrete-gray-40:  #F3F3F2;
+  --concrete-gray-20:  #F4F4F4; /* warm alternating surface */
+
+  --vega-violet:     #AB5CFA;
+  --vega-violet-20:  #EEDEFE;
+  --turquoise-pearl: #91E6D5;
+  --turquoise-pearl-20: #E9FAF7;
+  --lemon-glacier:   #FAFF01; /* highlight fills ONLY — never text on light */
+  --lemon-glacier-20:#FEFFCC;
+
+  --color-primary:       #3D15E0;
+  --color-primary-hover: #3312BD; /* canonical. Legacy platform uses #2F10B3 */
+  --color-error:         #DC3545;
+
+  /* ===== WEBSITE LAYER: elevation (blue-tinted hover is the signature) ===== */
+  --shadow-card-web:       0 1px 3px rgba(0,0,0,0.06);
+  --shadow-card-hover-web: 0 8px 24px rgba(61,21,224,0.08);
+  --shadow-elevated-web:   0 12px 40px rgba(61,21,224,0.12);
+
+  /* ===== WEBSITE LAYER: motion ===== */
+  --dur-fast:   150ms; /* @kind other */
+  --dur-normal: 250ms; /* @kind other */
+  --dur-slow:   400ms; /* @kind other */
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1); /* @kind other */ /* reveals */
+  --ease-out-cubic: cubic-bezier(0.33, 1, 0.68, 1); /* @kind other */ /* hovers */
+  --stagger: 0.08s; /* @kind other */
+
+  /* ===== WEBSITE LAYER: focus ===== */
+  --focus-ring-color-web: #3D15E0;              /* the ring colour, usable in box-shadow */
+  --focus-ring-web: 2px solid #3D15E0; /* @kind other */ /* outline shorthand */
+  --focus-offset-web: 2px;
+
+  /* ---------- Spacing ---------- */
+  --space-xxs: 2px;
+  --space-xs:  4px;
+  --space-sm:  8px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  32px;
+  --space-xxl: 40px;
+
+  /* Marketing rhythm */
+  --mkt-section: 6rem;
+  --mkt-block:   3rem;
+  --mkt-element: 1.5rem;
+
+  /* ---------- Radii ---------- */
+  --r-sm:  4px;
+  --r-md:  8px;
+  --r-lg:  16px;
+  --r-xl:  24px;
+  --r-xxl: 32px;
+  --r-pill: 3rem; /* platform buttons */
+  --r-ctl: 12px;  /* 0.75rem — website-layer buttons + inputs */
+  --r-card-web: 16px; /* 1rem — website-layer cards */
+
+  /* ---------- Shadows ---------- */
+  --shadow-light:   0 4px 5px rgba(0,0,0,0.05);
+  --shadow-box:     0 4px 20px rgba(0,0,0,0.10);
+  --shadow-dark:    0 4px 20px rgba(0,0,0,0.15);
+  --shadow-card:    0 4px 15px rgba(0,0,0,0.15); /* Card.vue actual value */
+
+  /* ---------- Layout ---------- */
+  --content-max:  72rem;  /* 1152px */
+  --readable-max: 42rem;  /* 672px */
+
+  /* ---------- Z ---------- */
+  --z-sidebar: 1000; /* @kind other */
+  --z-sticky-header: 500; /* @kind other */
+  --z-dropdown: 2000; /* @kind other */
+  --z-modal: 10000; /* @kind other */
+  --z-important-modal: 11000; /* @kind other */
+  --z-alert: 100000; /* @kind other */
+
+  /* ---------- Breakpoints (reference) ---------- */
+  --bp-xs: 380px;
+  --bp-sm: 576px;
+  --bp-md: 768px;
+  --bp-lg: 992px;
+  --bp-xl: 1200px;
+  --bp-xxl: 1400px;
+}
+
+/* ---------- Base elements ---------- */
+html { color-scheme: light; }
+html, body { background: var(--bg-app); color: var(--fg-primary); }
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-md);
+  line-height: var(--lh-md);
+  font-weight: var(--fw-regular);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 { font-family: var(--font-sans); margin: 0; }
+h1 { font-size: var(--fs-xxl); line-height: 1; }
+h2 { font-size: var(--fs-xl);  line-height: var(--lh-sm); }
+h3 { font-size: var(--fs-lg);  line-height: var(--lh-md); }
+h4 { font-size: var(--fs-md);  line-height: var(--lh-md); }
+h5 { font-size: var(--fs-sm);  line-height: var(--lh-md); }
+h6 { font-size: var(--fs-xs);  line-height: var(--lh-lg); }
+
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+b, strong { font-weight: var(--fw-semi); }
+
+/* ---------- LEGACY display class ----------
+   Superseded by .headline (fluid scale). Kept so older kits still render. */
+.display {
+  font-family: var(--font-display);
+  font-weight: 300;
+  letter-spacing: var(--display-tracking);
+  text-align: left;       /* brand rule: never center display */
+  line-height: 1.02;
+}
+.display--xl { font-size: var(--display-xl-size); }
+.display--lg { font-size: var(--display-lg-size); }
+.display--sm { font-size: var(--display-sm-size); }
+
+/* ---------- WEBSITE LAYER: fluid headlines ----------
+   Inter Light + negative tracking. Left-aligned everywhere except the
+   marketing hero. Use on new/refreshed surfaces. */
+.headline { font-family: var(--font-display); font-weight: 300; line-height: var(--headline-leading); text-align: left; color: var(--black-100); }
+.headline--xl { font-size: var(--headline-xl); letter-spacing: var(--headline-xl-tracking); }
+.headline--lg { font-size: var(--headline-lg); letter-spacing: var(--headline-lg-tracking); }
+.headline--md { font-size: var(--headline-md); letter-spacing: var(--headline-md-tracking); }
+.headline--sm { font-size: var(--headline-sm); letter-spacing: var(--headline-sm-tracking); }
+
+/* Editorial accent — italic serif spans INSIDE a headline. Use sparingly. */
+.headline em, .accent { font-family: var(--font-accent); font-style: italic; font-weight: 400; color: var(--blue-100); }
+
+/* Small label / eyebrow */
+.eyebrow { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; color: var(--blue-100); }
+
+/* ---------- WEBSITE LAYER: reveal motion ----------
+   Mark only 2–3 key blocks per page with [data-animate="reveal"]. */
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(1.5rem); } to { opacity: 1; transform: none; } }
+[data-animate="reveal"] { animation: fadeInUp 0.6s var(--ease-out-expo) both; }
+
+/* ---------- Text utilities (match Text.vue / Heading.vue) ---------- */
+.text-muted  { color: var(--fg-muted); }
+.text-danger { color: var(--color-danger-soft); }
+.text-bold   { font-weight: var(--fw-semi); }
+.text-sm     { font-size: var(--fs-sm); }
+.text-lg     { font-size: var(--fs-lg); }
+
+/* Required-field asterisk uses primary blue */
+.required::after { content: "*"; color: var(--color-blue); margin-left: var(--space-xs); }
+
+/* ---------- WEBSITE LAYER: components ----------
+   These CONSUME the -web tokens rather than just declaring them.
+   Scope: new/refreshed non-clinical surfaces. Platform pills/inputs stay put. */
+
+/* Rectangular CTA — black at rest, brand blue on hover. The signature interaction. */
+.btn-web {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  font-family: var(--font-sans); font-weight: 600; font-size: 14px; line-height: 1;
+  padding: 0.625rem 1.25rem; border-radius: var(--r-ctl);
+  border: 1px solid transparent; cursor: pointer;
+  transition: background var(--dur-normal) var(--ease-out-cubic),
+              color var(--dur-normal) var(--ease-out-cubic),
+              border-color var(--dur-normal) var(--ease-out-cubic),
+              box-shadow var(--dur-normal) var(--ease-out-cubic);
+}
+.btn-web:focus-visible { outline: var(--focus-ring-web); outline-offset: var(--focus-offset-web); }
+.btn-web--sm { padding: 0.5rem 1.25rem; font-size: 14px; }
+.btn-web--lg { padding: 0.875rem 1.75rem; font-size: 16px; }
+.btn-web--xl { padding: 1rem 2rem; font-size: 18px; font-weight: 700; }
+
+.btn-web--primary { background: var(--black-100); color: #fff; box-shadow: var(--shadow-card-web); }
+.btn-web--primary:hover { background: var(--blue-100); box-shadow: var(--shadow-card-hover-web); }
+.btn-web--primary:active { background: var(--color-primary-hover); }
+
+.btn-web--secondary { background: #fff; color: var(--blue-100); border-color: var(--blue-40); }
+.btn-web--secondary:hover { background: var(--blue-10); }
+
+.btn-web--ghost { background: #fff; color: var(--blue-100); border-color: var(--blue-100); }
+.btn-web--ghost:hover { background: var(--blue-10); }
+
+.btn-web--outline-dark { background: #fff; color: var(--black-100); border-color: var(--concrete-gray-100); }
+.btn-web--outline-dark:hover { background: var(--black-100); color: #fff; border-color: var(--black-100); }
+
+.btn-web--inverse { background: #fff; color: var(--blue-100); }
+.btn-web--inverse:hover { background: var(--crackling-lake-20); }
+.btn-web--inverse:focus-visible { outline-color: #fff; }
+
+.btn-web:disabled, .btn-web[aria-disabled="true"] {
+  opacity: 0.65; box-shadow: none; cursor: not-allowed;
+}
+.btn-web--primary:disabled { background: var(--concrete-gray-100); color: var(--black-60); }
+
+/* Card — hover reveals a primary border plus the blue-tinted lift. */
+.card-web {
+  background: #fff; padding: 2rem; border-radius: var(--r-card-web);
+  border: 1px solid var(--concrete-gray-40);
+  transition: border-color var(--dur-normal) var(--ease-out-cubic),
+              box-shadow var(--dur-normal) var(--ease-out-cubic);
+}
+.card-web:hover { border-color: var(--blue-100); box-shadow: var(--shadow-card-hover-web); }
+.card-web--featured { background: var(--crackling-lake-20); border-color: transparent; }
+.card-web__title { font-family: var(--font-display); font-weight: 400; font-size: 20px; letter-spacing: -0.02em; color: var(--black-100); margin: 0 0 8px; }
+.card-web__body  { font-size: 14px; line-height: 1.4; color: var(--black-60); margin: 0; }
+
+/* 48px circular icon chip — blue-10 fill, 24px primary-blue glyph. */
+.icon-chip {
+  width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
+  background: var(--blue-10); color: var(--blue-100);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+
+/* Input — double-ring focus. Deliberately NOT the legacy Bootstrap-blue ring. */
+.input-web {
+  width: 100%; font-family: var(--font-sans); font-size: 16px;
+  padding: 0.75rem 1rem; border-radius: var(--r-ctl);
+  border: 1px solid var(--concrete-gray-100); background: #fff; color: var(--black-100);
+  transition: border-color var(--dur-fast) var(--ease-out-cubic),
+              box-shadow var(--dur-fast) var(--ease-out-cubic);
+}
+.input-web::placeholder { color: var(--black-40); }
+.input-web:focus, .input-web:focus-visible {
+  outline: none;
+  border-color: var(--focus-ring-color-web);
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--focus-ring-color-web);
+}
+.input-web:disabled {
+  background: var(--concrete-gray-20); color: var(--black-40);
+  border-color: var(--concrete-gray-80); cursor: not-allowed;
+}
+
+/* Badge / eyebrow pill */
+.badge-web {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.8); backdrop-filter: blur(8px);
+  border: 1px solid var(--concrete-gray-60); border-radius: 999px;
+  padding: 6px 14px; font-size: 13px; color: var(--black-80);
+}
+
+/* ---------- WEBSITE LAYER: atmosphere ----------
+   Opt-in, decorative only. Always aria-hidden. Never behind dense data. */
+.glow, .aurora, .halo { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+
+.glow {
+  background:
+    radial-gradient(60% 50% at 22% 18%, rgba(61,21,224,0.13), transparent 70%),
+    radial-gradient(55% 45% at 82% 30%, rgba(171,92,250,0.10), transparent 70%),
+    radial-gradient(50% 40% at 60% 92%, rgba(139,115,236,0.08), transparent 70%);
+}
+
+/* Hero-level moments only — login, onboarding, empty states. Not working screens. */
+.aurora {
+  background:
+    radial-gradient(55% 48% at 25% 25%, rgba(145,230,213,0.40), transparent 70%),
+    radial-gradient(50% 44% at 78% 22%, rgba(171,92,250,0.20), transparent 70%),
+    radial-gradient(52% 46% at 62% 82%, rgba(252,200,220,0.32), transparent 70%),
+    radial-gradient(60% 50% at 40% 60%, rgba(61,21,224,0.10), transparent 70%);
+  animation: aurora-drift 20s ease-in-out infinite;
+}
+@keyframes aurora-drift {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(-24px, 18px); }
+}
+
+/* Behind a single focal element. */
+.halo {
+  background:
+    radial-gradient(38% 38% at 50% 44%, rgba(145,230,213,0.45), transparent 68%),
+    radial-gradient(30% 30% at 50% 44%, rgba(61,21,224,0.20), transparent 70%),
+    radial-gradient(46% 44% at 50% 44%, rgba(171,92,250,0.14), transparent 72%);
+}
+
+/* ---------- WEBSITE LAYER: long-form prose ---------- */
+.prose { color: var(--black-80); font-size: 1rem; line-height: 1.4; max-width: var(--readable-max); }
+.prose h1, .prose h2 { font-family: var(--font-display); font-weight: 300; line-height: var(--headline-leading); color: var(--black-100); }
+.prose h1 { font-size: var(--headline-md); letter-spacing: var(--headline-md-tracking); }
+.prose h2 { font-size: var(--headline-sm); letter-spacing: var(--headline-sm-tracking); }
+.prose h3 { font-family: var(--font-sans); font-size: 1.25rem; font-weight: 600; color: var(--black-100); }
+.prose a { color: var(--blue-100); text-decoration: underline; text-underline-offset: 2px; }
+.prose a:hover { color: var(--color-primary-hover); }
+.prose blockquote { border-left: 3px solid var(--blue-40); padding-left: 1rem; font-style: italic; color: var(--black-60); margin-left: 0; }
+.prose table { border-collapse: collapse; width: 100%; }
+.prose th, .prose td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--concrete-gray-60); }
+.prose th { font-weight: 600; background: var(--crackling-lake-20); }
+
+/* ---------- Shared utilities ---------- */
+/* Screen-reader-only. Visually hidden, still announced and still focusable when
+   it wraps a control's label. Lives here so every surface inherits one copy. */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+/* ---------- Focus ---------- */
+:where(button, a, input, select, textarea, [tabindex]):focus-visible {
+  outline: 0;
+  box-shadow: var(--focus-ring);
+}
+
+/* ---------- Reduced motion ----------
+   Scoped deliberately. A blanket `* { animation: none }` also kills functional
+   motion — loading spinners, progress rings, indeterminate bars — which removes
+   feedback the user still needs. Disable DECORATIVE motion and entrance
+   choreography; leave state transitions and status indicators alone. */
+@media (prefers-reduced-motion: reduce) {
+  /* Entrance reveals: show content immediately, no travel. */
+  [data-animate="reveal"] { animation: none; opacity: 1; transform: none; }
+
+  /* Decorative drift loops. */
+  .aurora, .glow, .halo { animation: none; transform: none; }
+
+  /* Anything explicitly marked as decorative motion. */
+  [data-motion="decorative"] { animation: none !important; transition: none !important; transform: none !important; }
+
+  /* Keep parallax and scroll-linked effects off. */
+  html { scroll-behavior: auto; }
+}

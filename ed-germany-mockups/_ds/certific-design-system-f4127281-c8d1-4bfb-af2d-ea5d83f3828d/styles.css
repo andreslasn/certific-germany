@@ -1,0 +1,18 @@
+/* Certific Design System — single entry point.
+ *
+ * Link this one file and you get the whole system:
+ *   <link rel="stylesheet" href="styles.css">
+ *
+ * Layer map:
+ *   colors_and_type.css  Foundation — brand tokens, type scale, platform + website layers.
+ *                        Always needed.
+ *   deck.css             Slide-deck layer. Proportional (cqw) stage tokens and slide
+ *                        components. Every rule is scoped under .deck / .slide / .deck-*
+ *                        so it cannot leak into app UI.
+ *
+ * Building a bundle where every byte on a clinical screen counts? Link
+ * colors_and_type.css on its own and add deck.css only on deck pages.
+ */
+
+@import "colors_and_type.css";
+@import "deck.css";

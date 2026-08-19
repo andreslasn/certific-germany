@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<script src="/slides/ed-germany-mockups/nav-menu.js"></script>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/certific-design-system-f4127281-c8d1-4bfb-af2d-ea5d83f3828d/colors_and_type.css">
+  <script src="_ds/certific-design-system-f4127281-c8d1-4bfb-af2d-ea5d83f3828d/_ds_bundle.js"></script>
+  <style>
+    @font-face { font-family: 'GT Planar'; src: url('fonts/GT-Planar-CERT.woff2'); font-weight: 300; font-display: swap; }
+    @font-face { font-family: 'Public Sans'; src: url('fonts/Public-Sans.woff2'); font-display: swap; }
+    body { margin: 0; background: #E9EDEF; font-family: 'Public Sans', sans-serif; color: #222222; }
+    a { color: #3D15E0; text-decoration: none; }
+    a:hover { color: #3312BD; }
+    textarea, input, button { font-family: 'Public Sans', sans-serif; }
+    @keyframes cta-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(61, 21, 224, 0.35); }
+      70% { box-shadow: 0 0 0 12px rgba(61, 21, 224, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(61, 21, 224, 0); }
+    }
+    @keyframes hotspot-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(61, 21, 224, 0.45); }
+      70% { box-shadow: 0 0 0 14px rgba(61, 21, 224, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(61, 21, 224, 0); }
+    }
+    @keyframes hotspot-pulse-red {
+      0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.45); }
+      70% { box-shadow: 0 0 0 14px rgba(220, 53, 69, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+    }
+  </style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px 24px 24px">
+  <div style="display:flex;align-items:center;gap:8px;justify-content:center">
+  <nav style="width:200px;flex-shrink:0;background:#FFFFFF;border-radius:16px;box-shadow:0 1px 3px rgba(0,0,0,0.06);padding:14px 10px;display:flex;flex-direction:column;gap:4px;font-size:13px">
+    <span style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#666666;padding:0 12px 8px">Patient flow</span>
+    <sc-for list="{{ tabs }}" as="tab" hint-placeholder-count="6">
+      <button onClick="{{ tab.select }}" style="display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:none;background:{{ tab.bg }};color:{{ tab.color }};border-radius:8px;padding:10px 12px;font-size:14px;cursor:pointer;transition:background 150ms" style-hover="background:{{ tab.hoverBg }}">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;flex-shrink:0;border-radius:50%;background:{{ tab.numBg }};color:{{ tab.numColor }};font-size:12px;font-weight:600">{{ tab.num }}</span>
+        {{ tab.label }}
+      </button>
+    </sc-for>
+  </nav>
+  <div style="display:flex;justify-content:center">
+  <div style="zoom:0.62;background:linear-gradient(145deg, #3a3a3e, #1a1a1c 40%, #2c2c30);border-radius:61px;padding:13px;box-shadow:inset 0 1px 1px rgba(255,255,255,0.25), inset 0 -1px 1px rgba(255,255,255,0.1), 0 30px 60px rgba(0,0,0,0.35)">
+  <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+    <div style="display:flex;flex-direction:column;min-height:100%;background:#F4F6F7;position:relative;overflow:hidden;padding-top:62px;padding-bottom:36px;box-sizing:border-box">
+
+      <sc-if value="{{ isPatientScreen }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;top:102px;right:-12px;width:218px;height:120px;z-index:0;pointer-events:none">
+          <sc-for list="{{ stripes }}" as="s" hint-placeholder-count="0">
+            <div style="position:absolute;top:0;width:4px;height:{{ s.h }}px;left:{{ s.left }}px;background:{{ s.bg }}"></div>
+          </sc-for>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1">
+          <div style="min-width:100px;margin-left:8px">
+            <button onClick="{{ prevScreen }}" style="display:inline-flex;align-items:center;gap:0.35rem;min-height:2rem;background:transparent;border:none;padding:0;color:#3D15E0;font-size:16px;cursor:pointer" aria-label="Back">
+              <img src="assets/icons/chevron-left-menu.svg" alt="" style="width:40px;height:40px;display:block">
+              <span>Back</span>
+            </button>
+          </div>
+          <svg width="32" height="32" style="transform:rotate(-90deg)">
+            <circle cx="16" cy="16" r="14" stroke="#e5e7eb" stroke-width="3" fill="none"></circle>
+            <circle cx="16" cy="16" r="14" stroke="#3D15E0" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="87.96" stroke-dashoffset="{{ progressOffset }}" style="transition:stroke-dashoffset 0.5s ease"></circle>
+          </svg>
+          <div style="background:#3D15E0;border-top-left-radius:8px;padding:8px">
+            <button onClick="{{ noop }}" style="display:inline-flex;flex-direction:row-reverse;align-items:center;gap:0.5rem;min-height:2.5rem;background:transparent;border:none;color:#FFFFFF;font-size:16px;cursor:pointer;padding:8px 12px" aria-label="Menu">
+              <span style="display:inline-block;width:21px;height:21px;background:#FFFFFF;-webkit-mask:url('assets/icons/hamburger-menu.svg') center/contain no-repeat;mask:url('assets/icons/hamburger-menu.svg') center/contain no-repeat"></span>
+              <span>Menu</span>
+            </button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isS0 }}" hint-placeholder-val="{{ true }}">
+        <div data-screen-label="1 Entry" onClick="{{ dismissHint }}" style="display:flex;flex-direction:column;flex:1;padding:16px 16px 24px">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 0">
+            <img src="assets/certific-logo-black-wordmark.svg" alt="Certific" style="width:107px;height:auto">
+            <div style="position:relative;display:flex;align-items:center;gap:10px">
+              <button onClick="{{ toggleLangHotspot }}" aria-label="About languages" data-motion="decorative" style="width:22px;height:22px;flex-shrink:0;border-radius:50%;background:#DC3545;border:3px solid #FFFFFF;cursor:pointer;animation:hotspot-pulse-red 2.4s cubic-bezier(0.33,1,0.68,1) infinite;padding:0"></button>
+              <span style="display:inline-flex;align-items:center;gap:4px;font-size:16px">EN<span style="display:inline-block;width:14px;height:14px;background:#222222;-webkit-mask:url('assets/icons/chevron-down.svg') center/contain no-repeat;mask:url('assets/icons/chevron-down.svg') center/contain no-repeat"></span></span>
+              <sc-if value="{{ langHotspotOpen }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;top:38px;right:0;width:270px;background:#222222;color:#FFFFFF;border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.5;box-shadow:0 4px 20px rgba(0,0,0,0.25);z-index:30">
+                  The solution will be available in German, and also supports English and Russian. <b style="color:#FF6B6B">Support for any other language must be discussed separately for the pilot.</b>
+                  <div style="position:absolute;top:-6px;right:24px;transform:rotate(45deg);width:12px;height:12px;background:#222222"></div>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px;padding:0 4px">
+            <h2 style="font-family:'GT Planar','Public Sans',sans-serif;font-weight:300;font-size:24px;line-height:1.3;text-align:center;margin:0">Welcome!</h2>
+            <p style="font-size:16px;line-height:1.5;text-align:center;margin:0;white-space:pre-line">This is a digital service platform for the emergency department.
+
+If an emergency department employee has asked you to describe your health concern, you can do it through this platform.</p>
+            <div style="position:relative;display:flex;justify-content:center;padding:24px 0">
+              <sc-if value="{{ showHint }}" hint-placeholder-val="{{ true }}">
+                <div style="position:absolute;bottom:44px;left:50%;transform:translateX(-50%);white-space:nowrap;background:#222222;color:#FFFFFF;border-radius:8px;padding:6px 12px;font-size:13px;box-shadow:0 4px 20px rgba(0,0,0,0.25)">
+                  Tip: the dots are clickable
+                  <div style="position:absolute;bottom:-5px;left:50%;transform:translateX(-50%) rotate(45deg);width:10px;height:10px;background:#222222"></div>
+                </div>
+              </sc-if>
+              <button onClick="{{ toggleHotspot }}" aria-label="About this screen" data-motion="decorative" style="width:22px;height:22px;flex-shrink:0;border-radius:50%;background:#DC3545;border:3px solid #FFFFFF;cursor:pointer;animation:hotspot-pulse-red 2.4s cubic-bezier(0.33,1,0.68,1) infinite;padding:0"></button>
+              <sc-if value="{{ hotspotOpen }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;bottom:56px;left:50%;transform:translateX(-50%);width:290px;background:#222222;color:#FFFFFF;border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.5;box-shadow:0 4px 20px rgba(0,0,0,0.25);z-index:30">
+                  Cloud based, nothing to install. Patients open a link in the browser, no app download needed. The interface adapts to any device, and this entry screen can carry your hospital's branding to increase patient trust.
+                  <div style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%) rotate(45deg);width:12px;height:12px;background:#222222"></div>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+          <button onClick="{{ nextScreen }}" data-motion="decorative" style="width:100%;min-height:3.5rem;border-radius:3rem;border:1px solid #3D15E0;background:#3D15E0;color:#FFFFFF;font-size:16px;line-height:1.2;font-weight:400;padding:16px 32px;cursor:pointer;transition:all 300ms;animation:cta-pulse 2.4s cubic-bezier(0.33,1,0.68,1) infinite" style-hover="background:#3312BD;border-color:#3312BD">Start describing health concern</button>
+          <div style="display:flex;justify-content:center;align-items:center;gap:8px;padding-top:20px;font-size:14px">
+            <a href="#">Terms and conditions</a><span style="color:#CED9DE">|</span><a href="#">Privacy policy</a><span style="color:#CED9DE">|</span><a href="#">Cookie policy</a>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isS1 }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="2 Consent" style="display:flex;flex-direction:column;flex:1;padding:16px 16px 24px">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0 20px">
+            <img src="assets/certific-logo-black-wordmark.svg" alt="Certific" style="width:107px;height:auto">
+            <span style="display:inline-flex;align-items:center;gap:4px;font-size:16px">EN<span style="display:inline-block;width:14px;height:14px;background:#222222;-webkit-mask:url('assets/icons/chevron-down.svg') center/contain no-repeat;mask:url('assets/icons/chevron-down.svg') center/contain no-repeat"></span></span>
+          </div>
+          <div style="position:relative;display:flex;align-items:flex-start;gap:10px;margin:8px 0 8px">
+            <p style="font-size:16px;line-height:1.4;margin:0;flex:1">Please read the terms of service and privacy policy before using our software platform.</p>
+            <button onClick="{{ toggleConsentHotspot }}" aria-label="About data protection" data-motion="decorative" style="width:22px;height:22px;flex-shrink:0;border-radius:50%;background:#DC3545;border:3px solid #FFFFFF;cursor:pointer;animation:hotspot-pulse-red 2.4s cubic-bezier(0.33,1,0.68,1) infinite;padding:0;margin-top:2px"></button>
+            <sc-if value="{{ consentHotspotOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;top:36px;right:0;width:290px;background:#222222;color:#FFFFFF;border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.5;box-shadow:0 4px 20px rgba(0,0,0,0.25);z-index:30">
+                We are ISO 27001 certified and GDPR compliant. Here the patient gives the consent to use the service.
+                <div style="position:absolute;top:-6px;right:24px;transform:rotate(45deg);width:12px;height:12px;background:#222222"></div>
+              </div>
+            </sc-if>
+          </div>
+          <sc-for list="{{ consents }}" as="cb" hint-placeholder-count="2">
+            <div style="display:flex;align-items:center;gap:8px;padding:14px 0;border-bottom:1px solid #E6ECEF">
+              <span onClick="{{ cb.toggle }}" data-motion="decorative" style="width:22px;height:22px;flex-shrink:0;border-radius:4px;border:{{ cb.border }};background-color:{{ cb.bg }};background-image:url('assets/icons/checkmark.svg');background-repeat:no-repeat;background-position:center;background-size:12px;cursor:pointer;animation:{{ cb.pulse }}"></span>
+              <span onClick="{{ cb.toggle }}" style="font-size:14px;font-weight:600;flex:1;cursor:pointer">{{ cb.label }}</span>
+              <span style="display:inline-block;width:14px;height:14px;background:#222222;-webkit-mask:url('assets/icons/chevron-right.svg') center/contain no-repeat;mask:url('assets/icons/chevron-right.svg') center/contain no-repeat"></span>
+            </div>
+          </sc-for>
+          <div style="margin-top:auto;padding-top:24px">
+            <button onClick="{{ nextScreen }}" data-motion="decorative" style="width:100%;min-height:3.5rem;border-radius:3rem;border:1px solid #3D15E0;background:#3D15E0;color:#FFFFFF;font-size:16px;line-height:1.2;padding:16px 32px;cursor:pointer;transition:all 300ms;opacity:{{ s2BtnOpacity }};animation:{{ s2BtnPulse }}" style-hover="background:#3312BD;border-color:#3312BD">Continue</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isS2who }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="3 Who is this for" style="display:flex;flex-direction:column;flex:1;padding:16px 16px 24px">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0 20px">
+            <img src="assets/certific-logo-black-wordmark.svg" alt="Certific" style="width:107px;height:auto">
+            <span style="display:inline-flex;align-items:center;gap:4px;font-size:16px">EN<span style="display:inline-block;width:14px;height:14px;background:#222222;-webkit-mask:url('assets/icons/chevron-down.svg') center/contain no-repeat;mask:url('assets/icons/chevron-down.svg') center/contain no-repeat"></span></span>
+          </div>
+          <h2 style="font-family:'GT Planar','Public Sans',sans-serif;font-weight:300;font-size:24px;line-height:1.3;text-align:center;margin:0 0 24px">Who is the health concern about?</h2>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <sc-for list="{{ whoOptions }}" as="opt" hint-placeholder-count="2">
+              <div onClick="{{ opt.select }}" style="display:flex;align-items:center;min-height:57px;background:{{ opt.bg }};border:{{ opt.border }};border-radius:16px;padding:0 16px;cursor:pointer;animation:{{ opt.pulse }}">
+                <span style="width:24px;height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-right:16px"><span style="width:{{ opt.dotSize }}px;height:{{ opt.dotSize }}px;border-radius:50%;background:{{ opt.dotBg }};border:{{ opt.dotBorder }};box-shadow:{{ opt.dotShadow }};box-sizing:border-box"></span></span>
+                <div style="display:flex;flex-direction:column;gap:2px;padding:10px 0">
+                  <span style="font-size:16px;color:{{ opt.labelColor }};user-select:none">{{ opt.title }}</span>
+                  <span style="font-size:14px;color:#666666">{{ opt.sub }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:auto;padding-top:24px">
+            <button onClick="{{ nextScreen }}" style="width:100%;min-height:3.5rem;border-radius:3rem;border:1px solid #3D15E0;background:#3D15E0;color:#FFFFFF;font-size:16px;line-height:1.2;padding:16px 32px;cursor:pointer;transition:all 300ms;opacity:{{ whoBtnOpacity }}" style-hover="background:#3312BD;border-color:#3312BD">Continue</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isS3id }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="4 Your details" style="display:flex;flex-direction:column;flex:1;padding:16px 16px 24px">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0 20px">
+            <img src="assets/certific-logo-black-wordmark.svg" alt="Certific" style="width:107px;height:auto">
+            <span style="display:inline-flex;align-items:center;gap:4px;font-size:16px">EN<span style="display:inline-block;width:14px;height:14px;background:#222222;-webkit-mask:url('assets/icons/chevron-down.svg') center/contain no-repeat;mask:url('assets/icons/chevron-down.svg') center/contain no-repeat"></span></span>
+          </div>
+          <h2 style="font-family:'GT Planar','Public Sans',sans-serif;font-weight:300;font-size:24px;line-height:1.3;text-align:center;margin:0 0 8px">Your details</h2>
+          <p style="font-size:16px;line-height:1.4;text-align:center;margin:0 0 8px">Enter your name and date of birth, or continue anonymously with a code from the emergency department.</p>
+          <div style="opacity:{{ idOpacity }};transition:opacity 250ms">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;margin:24px 0 8px 4px">
+              <span style="font-size:14px;font-weight:600;letter-spacing:0.5px">First and last name<span style="color:#3D15E0;margin-left:4px">*</span></span>
+              <sc-if value="{{ codeScanned }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;color:#666666">Not needed with a code</span></sc-if>
+            </div>
+            <input type="text" placeholder="First and last name" disabled="{{ codeScanned }}" style="width:100%;box-sizing:border-box;min-height:44px;padding:8px;font-size:16px;background:#FFFFFF;border:1px solid #CED9DE;border-radius:8px;color:#222222">
+            <div style="margin:16px 0 8px 4px"><span style="font-size:14px;font-weight:600;letter-spacing:0.5px">Date of birth<span style="color:#3D15E0;margin-left:4px">*</span></span></div>
+            <div style="position:relative">
+              <input type="text" placeholder="dd.mm.yyyy" disabled="{{ codeScanned }}" style="width:100%;box-sizing:border-box;min-height:44px;padding:8px 40px 8px 8px;font-size:16px;background:#FFFFFF;border:1px solid #CED9DE;border-radius:8px;color:#222222">
+              <span style="position:absolute;right:12px;top:12px;width:20px;height:20px;background:#666666;-webkit-mask:url('assets/icons/calendar.svg') center/contain no-repeat;mask:url('assets/icons/calendar.svg') center/contain no-repeat"></span>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;margin:20px 0">
+            <div style="flex:1;height:1px;background:#E6ECEF"></div><span style="font-size:14px;color:#666666">or</span><div style="flex:1;height:1px;background:#E6ECEF"></div>
+          </div>
+          <div style="background:#FFFFFF;border-radius:16px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:8px">
+            <div style="position:relative;display:flex;align-items:flex-start;gap:10px">
+              <span style="font-size:16px;font-weight:600;flex:1">Use a code from the emergency department</span>
+              <button onClick="{{ toggleCodeHotspot }}" aria-label="About anonymous use" data-motion="decorative" style="width:22px;height:22px;flex-shrink:0;border-radius:50%;background:#DC3545;border:3px solid #FFFFFF;cursor:pointer;animation:hotspot-pulse-red 2.4s cubic-bezier(0.33,1,0.68,1) infinite;padding:0"></button>
+              <sc-if value="{{ codeHotspotOpen }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;top:34px;right:0;width:290px;background:#222222;color:#FFFFFF;border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.5;box-shadow:0 4px 20px rgba(0,0,0,0.25);z-index:30">
+                  The solution can be used totally anonymously if that is a concern. It then requires the front desk staff to give the patient a unique code (bar code, printout). <b style="color:#FF6B6B">This would need to be built specifically for the pilot and is still open for discussion.</b>
+                  <div style="position:absolute;top:-6px;right:24px;transform:rotate(45deg);width:12px;height:12px;background:#222222"></div>
+                </div>
+              </sc-if>
+            </div>
+            <span style="font-size:14px;line-height:1.4;color:#666666">If you were given a printed code, scan it or enter the number. You can continue anonymously, without a name or date of birth.</span>
+            <sc-if value="{{ codeNotScanned }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ scanCode }}" style="width:100%;min-height:2.5rem;display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:3rem;border:1px solid #3D15E0;background:#F4F6F7;color:#3D15E0;font-size:16px;padding:8px 24px;cursor:pointer;transition:all 300ms;margin-top:4px" style-hover="background:#ECEFF0">
+                <span style="display:inline-block;width:21px;height:21px;background:#3D15E0;-webkit-mask:url('assets/icons/camera.svg') center/contain no-repeat;mask:url('assets/icons/camera.svg') center/contain no-repeat"></span>
+                Scan code
+              </button>
+              <sc-if value="{{ manualHidden }}" hint-placeholder-val="{{ true }}">
+                <button onClick="{{ showManual }}" style="background:transparent;border:none;color:#3D15E0;font-size:14px;padding:6px 0;cursor:pointer" style-hover="color:#3312BD">Enter code manually</button>
+              </sc-if>
+              <sc-if value="{{ manualShown }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;gap:8px;margin-top:4px">
+                  <input type="text" placeholder="e.g. 2481 9073" style="flex:1;box-sizing:border-box;min-height:44px;padding:8px;font-size:16px;background:#FFFFFF;border:1px solid #CED9DE;border-radius:8px;color:#222222">
+                  <button onClick="{{ scanCode }}" style="min-height:44px;border-radius:3rem;border:1px solid #3D15E0;background:#F4F6F7;color:#3D15E0;font-size:14px;padding:4px 16px;cursor:pointer" style-hover="background:#ECEFF0">Use code</button>
+                </div>
+              </sc-if>
+            </sc-if>
+            <sc-if value="{{ codeScanned }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#F0ECFD;border-radius:16px;padding:12px 16px;display:flex;flex-direction:column;gap:4px;margin-top:4px">
+                <span style="font-size:16px;font-weight:600;color:#3D15E0">Code ZNA-2481-9073</span>
+                <span style="font-size:14px;color:#666666">{{ clinicName }}</span>
+              </div>
+            </sc-if>
+          </div>
+          <div style="margin-top:auto;padding-top:24px">
+            <button onClick="{{ nextScreen }}" style="width:100%;min-height:3.5rem;border-radius:3rem;border:1px solid #3D15E0;background:#3D15E0;color:#FFFFFF;font-size:16px;line-height:1.2;padding:16px 32px;cursor:pointer;transition:all 300ms" style-hover="background:#3312BD;border-color:#3312BD">Continue</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isS4 }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="5 Describe concern" style="display:flex;flex-direction:column;flex:1;padding:16px 16px 24px;position:relative;z-index:1">
+          <div style="position:relative;display:flex;align-items:flex-start;justify-content:center;gap:10px;margin:8px 0 16px">
+            <h1 style="font-family:'GT Planar','Public Sans',sans-serif;font-weight:300;font-size:30px;line-height:1.1;text-align:center;margin:0">Describe your health concern</h1>
+            <button onClick="{{ toggleDescribeHotspot }}" aria-label="About describing the concern" data-motion="decorative" style="width:22px;height:22px;flex-shrink:0;border-radius:50%;background:#DC3545;border:3px solid #FFFFFF;cursor:pointer;animation:hotspot-pulse-red 2.4s cubic-bezier(0.33,1,0.68,1) infinite;padding:0;margin-top:4px"></button>
+            <sc-if value="{{ describeHotspotOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;top:48px;left:50%;transform:translateX(-50%);width:290px;background:#222222;color:#FFFFFF;border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.5;box-shadow:0 4px 20px rgba(0,0,0,0.25);z-index:30">
+                Patients use their own devices and start by simply typing their concern in their own freeform words.
+                <div style="position:absolute;top:-6px;left:50%;transform:translateX(-50%) rotate(45deg);width:12px;height:12px;background:#222222"></div>
+              </div>
+            </sc-if>
+          </div>
+          <div style="position:relative">
+            <textarea aria-label="Describe your health concern" placeholder="Describe your health concern as clearly as possible." defaultValue="My lower back started hurting three days ago after lifting boxes at work. The pain is on the right side and gets worse when I bend forward or sit for a long time. It sometimes shoots down my right thigh. Paracetamol helped a little. No fever, no numbness." style="width:100%;box-sizing:border-box;min-height:164px;resize:none;font-size:16px;line-height:1.3;background:#FFFFFF;border:1px solid #CED9DE;border-radius:8px;padding:8px 8px 40px;color:#222222"></textarea>
+            <span style="position:absolute;left:8px;bottom:16px;width:21px;height:21px;background:#3D15E0;-webkit-mask:url('assets/icons/microphone.svg') center/contain no-repeat;mask:url('assets/icons/microphone.svg') center/contain no-repeat"></span>
+          </div>
+          <div style="display:flex;gap:8px;padding:16px 0">
+            <span style="display:inline-block;width:21px;height:21px;flex-shrink:0;background:#3D15E0;-webkit-mask:url('assets/icons/camera.svg') center/contain no-repeat;mask:url('assets/icons/camera.svg') center/contain no-repeat"></span>
+            <span style="font-size:14px;line-height:1.4;color:#666666">You can add photos and other documents at the end of the pathway.</span>
+          </div>
+          <div style="display:flex;gap:8px;padding-bottom:16px">
+            <span style="display:inline-block;width:21px;height:21px;flex-shrink:0;background:#3D15E0;-webkit-mask:url('assets/icons/ai-sparks.svg') center/contain no-repeat;mask:url('assets/icons/ai-sparks.svg') center/contain no-repeat"></span>
+            <span style="font-size:14px;line-height:1.4;color:#666666">By continuing, artificial intelligence will ask additional questions to help the doctor better understand your health concern. You can review and edit the summary before sending it. <a href="#">More information</a></span>
+          </div>
+          <div style="position:relative;display:flex;justify-content:center;padding:16px 0">
+            <button onClick="{{ toggleFormsHotspot }}" aria-label="About paper forms" data-motion="decorative" style="width:22px;height:22px;flex-shrink:0;border-radius:50%;background:#DC3545;border:3px solid #FFFFFF;cursor:pointer;animation:hotspot-pulse-red 2.4s cubic-bezier(0.33,1,0.68,1) infinite;padding:0"></button>
+            <sc-if value="{{ formsHotspotOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;top:38px;left:50%;transform:translateX(-50%);width:300px;background:#222222;color:#FFFFFF;border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.5;box-shadow:0 4px 20px rgba(0,0,0,0.25);z-index:30">
+                If patients would otherwise fill in other paper forms, those questions can be added here too, for example insurance details, or extra questions when the complaint follows a workplace accident. <b style="color:#FF6B6B">This would need to be developed separately for the pilot and is still open for discussion.</b>
+                <div style="position:absolute;top:-6px;left:50%;transform:translateX(-50%) rotate(45deg);width:12px;height:12px;background:#222222"></div>
+              </div>
+            </sc-if>
+          </div>
+          <div style="margin-top:auto">
+            <button onClick="{{ nextScreen }}" style="width:100%;min-height:3.5rem;border-radius:3rem;border:1px solid #3D15E0;background:#3D15E0;color:#FFFFFF;font-size:16px;line-height:1.2;padding:16px 32px;cursor:pointer;transition:all 300ms" style-hover="background:#3312BD;border-color:#3312BD">Continue</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isS5 }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="6 Question" style="display:flex;flex-direction:column;flex:1;padding:16px 16px 24px;position:relative;z-index:1">
+          <div style="text-align:center;padding-bottom:16px"><span style="display:inline-block;background:#FFFFFF;border-radius:16px;padding:8px;font-size:14px">Back pain</span></div>
+          <div style="position:relative;display:flex;align-items:flex-start;justify-content:center;gap:10px;margin:0 0 24px">
+            <h2 style="font-family:'GT Planar','Public Sans',sans-serif;font-weight:300;font-size:24px;line-height:1.3;text-align:center;margin:0">How long has your back pain lasted?</h2>
+            <button onClick="{{ toggleQHotspot }}" aria-label="About these questions" data-motion="decorative" style="width:22px;height:22px;flex-shrink:0;border-radius:50%;background:#DC3545;border:3px solid #FFFFFF;cursor:pointer;animation:hotspot-pulse-red 2.4s cubic-bezier(0.33,1,0.68,1) infinite;padding:0;margin-top:4px"></button>
+            <sc-if value="{{ qHotspotOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;top:44px;left:50%;transform:translateX(-50%);width:290px;background:#222222;color:#FFFFFF;border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.5;box-shadow:0 4px 20px rgba(0,0,0,0.25);z-index:30">
+                These questions are picked by AI from a curated question bank. The questions can be reviewed by the hospital and are evidence based.
+                <div style="position:absolute;top:-6px;left:50%;transform:translateX(-50%) rotate(45deg);width:12px;height:12px;background:#222222"></div>
+              </div>
+            </sc-if>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <sc-for list="{{ q4Options }}" as="opt" hint-placeholder-count="4">
+              <div onClick="{{ opt.select }}" style="display:flex;flex-direction:column;min-height:57px;justify-content:center;background:{{ opt.bg }};border:{{ opt.border }};border-radius:16px;padding:{{ opt.padding }};cursor:pointer">
+                <div style="display:flex;align-items:center">
+                  <span style="width:24px;height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-right:16px"><span style="width:{{ opt.dotSize }}px;height:{{ opt.dotSize }}px;border-radius:50%;background:{{ opt.dotBg }};border:{{ opt.dotBorder }};box-shadow:{{ opt.dotShadow }};box-sizing:border-box"></span></span>
+                  <span style="font-size:16px;color:{{ opt.labelColor }};user-select:none">{{ opt.title }}</span>
+                </div>
+                <sc-if value="{{ opt.showSlot }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-top:16px">
+                    <textarea placeholder="" style="width:100%;box-sizing:border-box;min-height:100px;resize:none;font-size:16px;line-height:1.3;background:#FFFFFF;border:1px solid #CED9DE;border-radius:8px;padding:8px;color:#222222"></textarea>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:auto;padding-top:24px">
+            <button onClick="{{ nextScreen }}" style="width:100%;min-height:3.5rem;border-radius:3rem;border:1px solid #3D15E0;background:#3D15E0;color:#FFFFFF;font-size:16px;line-height:1.2;padding:16px 32px;cursor:pointer;transition:all 300ms" style-hover="background:#3312BD;border-color:#3312BD">Next</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isS6 }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="7 Medications" style="display:flex;flex-direction:column;flex:1;padding:16px 16px 24px;position:relative;z-index:1">
+          <div style="text-align:center;padding-bottom:16px"><span style="display:inline-block;background:#FFFFFF;border-radius:16px;padding:8px;font-size:14px">Back pain</span></div>
+          <h2 style="font-family:'GT Planar','Public Sans',sans-serif;font-weight:300;font-size:24px;line-height:1.3;text-align:center;margin:0 0 8px">Medications</h2>
+          <p style="font-size:16px;line-height:1.4;text-align:center;margin:0 0 16px">Please list all the medications you are currently taking.</p>
+          <div style="margin:0 0 8px 4px"><span style="font-size:14px;font-weight:600;letter-spacing:0.5px">Medications<span style="color:#3D15E0;margin-left:4px">*</span></span></div>
+          <textarea placeholder="Enter your current medications" style="width:100%;box-sizing:border-box;min-height:72px;resize:none;font-size:16px;line-height:1.3;background:#FFFFFF;border:1px solid #CED9DE;border-radius:8px;padding:8px;color:#222222"></textarea>
+          <div style="display:flex;align-items:center;gap:12px;margin:20px 0">
+            <div style="flex:1;height:1px;background:#E6ECEF"></div><span style="font-size:14px;color:#666666">or</span><div style="flex:1;height:1px;background:#E6ECEF"></div>
+          </div>
+          <sc-if value="{{ showBmp }}" hint-placeholder-val="{{ true }}">
+            <div style="background:#FFFFFF;border-radius:16px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+              <div style="position:relative;display:flex;align-items:flex-start;gap:10px">
+                <span style="font-size:16px;font-weight:600;flex:1">Have a printed medication plan?</span>
+                <button onClick="{{ toggleBmpHotspot }}" aria-label="About medication plan scanning" data-motion="decorative" style="width:22px;height:22px;flex-shrink:0;border-radius:50%;background:#DC3545;border:3px solid #FFFFFF;cursor:pointer;animation:hotspot-pulse-red 2.4s cubic-bezier(0.33,1,0.68,1) infinite;padding:0"></button>
+                <sc-if value="{{ bmpHotspotOpen }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:absolute;top:34px;right:0;width:290px;background:#222222;color:#FFFFFF;border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.5;box-shadow:0 4px 20px rgba(0,0,0,0.25);z-index:30">
+                    Scanning the printed Medikationsplan reads the patient's medications automatically. <b style="color:#FF6B6B">This, like the anonymous code, would need to be built specifically for the pilot and is still open for discussion.</b>
+                    <div style="position:absolute;top:-6px;right:24px;transform:rotate(45deg);width:12px;height:12px;background:#222222"></div>
+                  </div>
+                </sc-if>
+              </div>
+              <span style="font-size:14px;line-height:1.4;color:#666666">Scan the square code on your Medikationsplan and we will read the list for you. You only confirm what you actually take.</span>
+              <sc-if value="{{ bmpNotScanned }}" hint-placeholder-val="{{ true }}">
+                <button onClick="{{ scanBmp }}" style="width:100%;min-height:2.5rem;display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:3rem;border:1px solid #3D15E0;background:#F4F6F7;color:#3D15E0;font-size:16px;padding:8px 24px;cursor:pointer;transition:all 300ms;margin-top:4px" style-hover="background:#ECEFF0">
+                  <span style="display:inline-block;width:21px;height:21px;background:#3D15E0;-webkit-mask:url('assets/icons/camera.svg') center/contain no-repeat;mask:url('assets/icons/camera.svg') center/contain no-repeat"></span>
+                  Scan medication plan
+                </button>
+              </sc-if>
+              <sc-if value="{{ bmpScanned }}" hint-placeholder-val="{{ false }}">
+                <span style="display:inline-flex;align-items:center;gap:6px;font-size:14px;color:#22967F"><span style="display:inline-block;width:16px;height:16px;background:#22967F;-webkit-mask:url('assets/icons/shield-check.svg') center/contain no-repeat;mask:url('assets/icons/shield-check.svg') center/contain no-repeat"></span>Plan read · printed 12.06.2026 · 3 medications</span>
+              </sc-if>
+            </div>
+            <sc-if value="{{ bmpScanned }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+                <sc-for list="{{ meds }}" as="med" hint-placeholder-count="3">
+                  <div style="background:#FFFFFF;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:8px">
+                    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">
+                      <span style="font-size:16px;font-weight:600">{{ med.name }}</span>
+                      <span style="font-size:14px;color:#666666">{{ med.detail }}</span>
+                    </div>
+                    <span style="font-size:14px;color:#666666">{{ med.dosing }}</span>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px">
+                      <sc-for list="{{ med.chips }}" as="chip" hint-placeholder-count="3">
+                        <button onClick="{{ chip.select }}" style="border:1px solid {{ chip.borderColor }};background:{{ chip.bg }};color:{{ chip.color }};border-radius:999px;padding:4px 12px;font-size:14px;cursor:pointer;transition:all 150ms">{{ chip.label }}</button>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+          </sc-if>
+          <div style="margin-top:auto;padding-top:24px">
+            <button onClick="{{ nextScreen }}" style="width:100%;min-height:3.5rem;border-radius:3rem;border:1px solid #3D15E0;background:#3D15E0;color:#FFFFFF;font-size:16px;line-height:1.2;padding:16px 32px;cursor:pointer;transition:all 300ms" style-hover="background:#3312BD;border-color:#3312BD">Continue</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isS7 }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="8 Summary" style="display:flex;flex-direction:column;flex:1;padding:16px 16px 24px;position:relative;z-index:1">
+          <div style="position:relative;display:flex;align-items:flex-start;justify-content:center;gap:10px;margin:8px 0 16px">
+            <h1 style="font-family:'GT Planar','Public Sans',sans-serif;font-weight:300;font-size:30px;line-height:1.1;text-align:center;margin:0">Review summary</h1>
+            <button onClick="{{ toggleSummaryHotspot }}" aria-label="About the summary" data-motion="decorative" style="width:22px;height:22px;flex-shrink:0;border-radius:50%;background:#DC3545;border:3px solid #FFFFFF;cursor:pointer;animation:hotspot-pulse-red 2.4s cubic-bezier(0.33,1,0.68,1) infinite;padding:0;margin-top:4px"></button>
+            <sc-if value="{{ summaryHotspotOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;top:44px;left:50%;transform:translateX(-50%);width:290px;background:#222222;color:#FFFFFF;border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.5;box-shadow:0 4px 20px rgba(0,0,0,0.25);z-index:30">
+                The AI has assisted the patient to produce a more complete history of the presenting complaint. The patient can add a photo if needed and send everything to the staff next.
+                <div style="position:absolute;top:-6px;left:50%;transform:translateX(-50%) rotate(45deg);width:12px;height:12px;background:#222222"></div>
+              </div>
+            </sc-if>
+          </div>
+          <p style="font-size:16px;line-height:1.4;text-align:center;margin:0 0 16px">This summary has been automatically prepared in a doctor-friendly format to make it easier to understand your concern. Please read the text carefully and make corrections if needed.</p>
+          <div style="position:relative;margin-bottom:16px">
+            <textarea aria-label="Review summary" defaultValue="Reason for contact: Lower back pain, right side, started 3 days ago after lifting boxes at work.
+
+Additional information: Pain worsens on bending forward and prolonged sitting, radiates to the right thigh. Pain intensity 6/10 at worst, 3/10 at rest. No fever, no numbness or weakness in the legs, no bladder or bowel symptoms. Sleep is disturbed by turning in bed. Paracetamol gave partial relief. No previous back injuries. Works in a warehouse, lifts regularly.
+
+Allergies: Penicillin (hives), aspirin (rash), latex (contact irritation). No known food allergies.
+
+Surgical history: Appendectomy 2011, arthroscopy of the left knee 2019. No spinal surgery.
+
+Medications (confirmed from medication plan): Ramipril 5 mg 1-0-0-0, Metformin 850 mg 1-0-1-0, Ibuprofen 400 mg (dose changed, now taken twice daily). Nothing else taken regularly." style="width:100%;box-sizing:border-box;min-height:420px;resize:none;font-size:16px;line-height:1.3;background:#FFFFFF;border:1px solid #CED9DE;border-radius:8px;padding:8px 8px 36px;color:#222222"></textarea>
+            <span style="position:absolute;right:8px;bottom:16px;width:21px;height:21px;background:#3D15E0;-webkit-mask:url('assets/icons/pencil.svg') center/contain no-repeat;mask:url('assets/icons/pencil.svg') center/contain no-repeat"></span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:16px;border:1px dashed #3D15E0;border-radius:8px;background:#FFFFFF;cursor:pointer">
+            <span style="font-size:16px;color:#3D15E0">Add images or files</span>
+            <span style="display:inline-block;width:28px;height:28px;background:#222222;-webkit-mask:url('assets/icons/cloud-upload.svg') center/contain no-repeat;mask:url('assets/icons/cloud-upload.svg') center/contain no-repeat"></span>
+          </div>
+          <div style="margin-top:auto;padding-top:24px">
+            <button onClick="{{ noop }}" style="width:100%;min-height:3.5rem;border-radius:3rem;border:1px solid #3D15E0;background:#3D15E0;color:#FFFFFF;font-size:16px;line-height:1.2;padding:16px 32px;cursor:pointer;transition:all 300ms" style-hover="background:#3312BD;border-color:#3312BD">Confirm and send</button>
+          </div>
+        </div>
+      </sc-if>
+
+    </div>
+  </x-import>
+  </div>
+  </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;clinicName&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;Universitätsklinikum München, Zentrale Notaufnahme&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Content&quot;}, &quot;showBmpScan&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Medication plan&quot;}}">
+class Component extends DCLogic {
+  state = {
+    screen: 0,
+    openHotspot: null,
+    hintDismissed: false,
+    who: 'self',
+    terms: true,
+    privacy: true,
+    codeScanned: false,
+    manualShown: false,
+    q4: null,
+    bmpScanned: false,
+    medStatus: { 0: 'Still taking', 1: 'Still taking', 2: 'Dose changed' },
+  };
+
+  renderVals() {
+    const s = this.state;
+    const screens = ['Entry', 'Consent', 'Who is this for', 'Your details', 'Describe concern', 'Question', 'Medications', 'Summary'];
+    const tabs = screens.map((label, i) => {
+      const active = i === s.screen;
+      return {
+        label,
+        num: String(i + 1),
+        bg: active ? '#F0ECFD' : '#FFFFFF',
+        hoverBg: active ? '#F0ECFD' : '#F4F6F7',
+        color: active ? '#3D15E0' : '#222222',
+        numBg: active ? '#3D15E0' : '#F4F6F7',
+        numColor: active ? '#FFFFFF' : '#666666',
+        select: () => this.setState({ screen: i }),
+      };
+    });
+
+    const progressMap = { 4: 20, 5: 55, 6: 78, 7: 96 };
+    const C = 2 * Math.PI * 14;
+    const pct = progressMap[s.screen] || 0;
+    const progressOffset = (C - (pct / 100) * C).toFixed(2);
+
+    const stripeSpecs = [[24,128,0.25],[30,134,0.3],[36,140,0.35],[42,146,0.4],[48,152,0.45],[60,158,0.5],[66,164,0.55],[78,170,0.6],[84,176,0.65],[96,182,0.7],[102,188,0.75],[114,194,0.8],[120,200,0.85],[126,206,0.9],[132,212,0.95],[138,218,1]];
+    const stripes = stripeSpecs.map(([h, left, o]) => ({
+      h, left,
+      bg: `linear-gradient(to bottom, rgba(147,125,218,${0.45 * o}) 0%, rgba(147,125,218,${0.25 * o}) 20%, rgba(147,125,218,${0.12 * o}) 50%, rgba(147,125,218,${0.04 * o}) 80%, rgba(147,125,218,${0.01 * o}) 100%)`,
+    }));
+
+    const consents = [
+      { key: 'terms', label: 'I have read and agree with the Terms and conditions', checked: s.terms },
+      { key: 'privacy', label: 'I have read the Privacy policy', checked: s.privacy },
+    ].map((c) => ({
+      label: c.label,
+      bg: c.checked ? '#3D15E0' : '#FFFFFF',
+      border: c.checked ? '2px solid #3D15E0' : '2px solid #666666',
+      pulse: c.checked ? 'none' : 'hotspot-pulse 2.4s cubic-bezier(0.33,1,0.68,1) infinite',
+      toggle: () => this.setState({ [c.key]: !s[c.key] }),
+    }));
+
+    const whoData = [
+      { id: 'self', title: 'For myself', sub: 'I am describing my own health concern.' },
+      { id: 'other', title: 'For someone else', sub: 'A child or a person I represent.' },
+    ];
+    const whoOptions = whoData.map((w) => {
+      const sel = s.who === w.id;
+      return {
+        title: w.title,
+        sub: w.sub,
+        bg: sel ? 'linear-gradient(45deg, #f4f6f7, #d3c9ff)' : '#FFFFFF',
+        border: sel ? '1px solid #3D15E0' : '1px solid transparent',
+        labelColor: sel ? '#3D15E0' : '#222222',
+        dotSize: sel ? 19 : 24,
+        dotBg: sel ? '#3D15E0' : '#FFFFFF',
+        dotBorder: sel ? 'none' : '2px solid #CED9DE',
+        dotShadow: sel ? 'inset 0 0 0 3px #FFFFFF, 0 0 0 2px #3D15E0' : 'none',
+        pulse: w.id === 'self' && !s.who ? 'cta-pulse 2.4s cubic-bezier(0.33,1,0.68,1) infinite' : 'none',
+        select: () => this.setState({ who: w.id }),
+      };
+    });
+
+    const q4Titles = ['Less than a week', '1\u20134 weeks', '1\u20133 months', 'More than 3 months', 'Answer in free form text (optional)'];
+    const q4Options = q4Titles.map((title, i) => {
+      const id = i === 4 ? 'other' : 'opt' + i;
+      const sel = s.q4 === id;
+      const showSlot = sel && id === 'other';
+      return {
+        title,
+        bg: sel ? 'linear-gradient(45deg, #f4f6f7, #d3c9ff)' : '#FFFFFF',
+        border: sel ? '1px solid #3D15E0' : '1px solid transparent',
+        labelColor: sel ? '#3D15E0' : '#222222',
+        padding: showSlot ? '16px' : '0 16px',
+        dotSize: sel ? 19 : 24,
+        dotBg: sel ? '#3D15E0' : '#FFFFFF',
+        dotBorder: sel ? 'none' : '2px solid #CED9DE',
+        dotShadow: sel ? 'inset 0 0 0 3px #FFFFFF, 0 0 0 2px #3D15E0' : 'none',
+        showSlot,
+        select: () => this.setState({ q4: id }),
+      };
+    });
+
+    const medData = [
+      { name: 'Ramipril', detail: '5 mg · tablet', dosing: '1-0-0-0 · every morning · blood pressure' },
+      { name: 'Metformin', detail: '850 mg · tablet', dosing: '1-0-1-0 · morning and evening · diabetes' },
+      { name: 'Ibuprofen', detail: '400 mg · tablet', dosing: 'When needed · pain' },
+    ];
+    const chipLabels = ['Still taking', 'Stopped', 'Dose changed'];
+    const meds = medData.map((m, mi) => ({
+      ...m,
+      chips: chipLabels.map((label) => {
+        const active = s.medStatus[mi] === label;
+        return {
+          label,
+          bg: active ? '#3D15E0' : '#FFFFFF',
+          color: active ? '#FFFFFF' : '#222222',
+          borderColor: active ? '#3D15E0' : '#CED9DE',
+          select: () => this.setState({ medStatus: { ...s.medStatus, [mi]: label } }),
+        };
+      }),
+    }));
+
+    return {
+      tabs, stripes, progressOffset, consents, q4Options, meds,
+      isS0: s.screen === 0, isS1: s.screen === 1, isS2who: s.screen === 2, isS3id: s.screen === 3,
+      isS4: s.screen === 4, isS5: s.screen === 5, isS6: s.screen === 6, isS7: s.screen === 7,
+      isPatientScreen: s.screen >= 4,
+      whoOptions,
+      whoBtnOpacity: s.who ? 1 : 0.6,
+      clinicName: this.props.clinicName ?? 'Universitätsklinikum München, Zentrale Notaufnahme',
+      showBmp: this.props.showBmpScan ?? true,
+      codeScanned: s.codeScanned,
+      codeNotScanned: !s.codeScanned,
+      manualShown: s.manualShown,
+      manualHidden: !s.manualShown,
+      bmpScanned: s.bmpScanned,
+      bmpNotScanned: !s.bmpScanned,
+      idOpacity: s.codeScanned ? 0.45 : 1,
+      s2BtnOpacity: s.terms && s.privacy ? 1 : 0.6,
+      s2BtnPulse: s.terms && s.privacy ? 'cta-pulse 2.4s cubic-bezier(0.33,1,0.68,1) infinite' : 'none',
+      scanCode: () => this.setState({ codeScanned: true }),
+      showManual: () => this.setState({ manualShown: true }),
+      scanBmp: () => this.setState({ bmpScanned: true }),
+      nextScreen: () => this.setState({ screen: Math.min(7, s.screen + 1) }),
+      prevScreen: () => this.setState({ screen: Math.max(0, s.screen - 1) }),
+      noop: () => {},
+      showHint: !s.hintDismissed,
+      dismissHint: () => { if (!s.hintDismissed) this.setState({ hintDismissed: true }); },
+      hotspotOpen: s.openHotspot === 'entry',
+      toggleHotspot: () => this.setState({ openHotspot: s.openHotspot === 'entry' ? null : 'entry' }),
+      langHotspotOpen: s.openHotspot === 'lang',
+      toggleLangHotspot: () => this.setState({ openHotspot: s.openHotspot === 'lang' ? null : 'lang' }),
+      qHotspotOpen: s.openHotspot === 'q',
+      toggleQHotspot: () => this.setState({ openHotspot: s.openHotspot === 'q' ? null : 'q' }),
+      consentHotspotOpen: s.openHotspot === 'consent',
+      toggleConsentHotspot: () => this.setState({ openHotspot: s.openHotspot === 'consent' ? null : 'consent' }),
+      codeHotspotOpen: s.openHotspot === 'code',
+      toggleCodeHotspot: () => this.setState({ openHotspot: s.openHotspot === 'code' ? null : 'code' }),
+      describeHotspotOpen: s.openHotspot === 'describe',
+      toggleDescribeHotspot: () => this.setState({ openHotspot: s.openHotspot === 'describe' ? null : 'describe' }),
+      summaryHotspotOpen: s.openHotspot === 'summary',
+      toggleSummaryHotspot: () => this.setState({ openHotspot: s.openHotspot === 'summary' ? null : 'summary' }),
+      bmpHotspotOpen: s.openHotspot === 'bmp',
+      toggleBmpHotspot: () => this.setState({ openHotspot: s.openHotspot === 'bmp' ? null : 'bmp' }),
+      formsHotspotOpen: s.openHotspot === 'forms',
+      toggleFormsHotspot: () => this.setState({ openHotspot: s.openHotspot === 'forms' ? null : 'forms' }),
+    };
+  }
+}
+</script>
+</body>
+</html>
